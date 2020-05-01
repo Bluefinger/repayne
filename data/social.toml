@@ -1,0 +1,9 @@
+[[websites]]
+    name = "Github"
+    icon = "fa-github"
+    url = "https://github.com/Bluefinger"
+
+[[websites]]
+    name = "Linkedin"
+    icon = "fa-linkedin"
+    url = "https://uk.linkedin.com/in/goncalo-payne-7910825a"

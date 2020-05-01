@@ -1,0 +1,34 @@
+baseURL = "https://codepayne.com/"
+languageCode = "en-gb"
+title = "Code Payne"
+theme = "bastet"
+pluralizeListTitles = false
+paginate = 10
+pygmentsUseClasses = true
+disableKinds = ["taxonomy", "taxonomyTerm"]
+
+[permalinks]
+blog = "/:section/:year/:month/:title/"
+portfolio = "/:section/:year/:title/"
+
+[sitemap]
+changefreq = "weekly"
+priority = 0.5
+
+[[menu.main]]
+name = "Home"
+identifier = "home"
+url = "/"
+weight = -10
+
+[[menu.main]]
+name = "Portfolio"
+identifier = "portfolio"
+url = "/portfolio/"
+weight = 10
+
+[[menu.main]]
+name = "Blog"
+identifier = "blog"
+url = "/blog/"
+weight = 20

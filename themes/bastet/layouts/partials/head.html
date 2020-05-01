@@ -1,0 +1,14 @@
+<title>
+  {{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}
+</title>
+<meta charset="utf-8" />
+<meta name="generator" content="Hugo {{ hugo.Version }}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="{{ .Site.Params.author }}" />
+<meta name="description" content="{{ .Description }}" />
+{{ with .OutputFormats.Get "rss" -}}
+{{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end -}}
+<base href="{{ .Site.BaseURL }}" />
+{{/*  <link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>  */}}
+<script type="module" src="js/entry.js"></script>

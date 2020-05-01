@@ -1,0 +1,20 @@
+.swatch-picker {
+  .swatch-theme {
+    height: 20px;
+    width: 20px;
+    margin:0 5px;
+    border: 3px solid transparent;
+    box-shadow: inset 0 0 0 1px #000;
+    cursor: pointer;
+
+    &.light {
+      background-color: #ddd;
+    }
+    &.dark {
+      background-color: #333;
+    }
+    &.active {
+      border-color: #00f;
+    }
+  }
+}
