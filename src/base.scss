@@ -1,17 +1,10 @@
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.page {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 640px) and (orientation: landscape), (min-width: 800px) and (orientation: portrait) {
-  .page { flex-direction: row; }
-}
+@import "./Theme/variables";
+@import "./Theme/utils";
+@import "./Theme/normalize";
+@import "./Theme/text";
+@import "./Theme/grid";
+@import "./Theme/layout_mobile";
+@import "./Theme/layout_medium";
+@import "./Theme/sidebar";
+@import "./Theme/portfolio";
+// @import "./Theme/layout_flat";

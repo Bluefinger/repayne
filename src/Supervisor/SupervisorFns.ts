@@ -32,7 +32,7 @@ export const patchContext = <State extends object>(
 export const prepareRender = <State extends object>(
   app: App<State>
 ): App<State> => {
-  const { context, actions, update } = app;
+  const { context, actions, update, register } = app;
   const { state, patch, next } = context;
   if (next.length) {
     const params = Promise.resolve({
@@ -40,6 +40,7 @@ export const prepareRender = <State extends object>(
       patch,
       actions,
       update,
+      register,
     });
     for (const nextFn of next) {
       params.then(nextFn);

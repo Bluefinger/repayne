@@ -17,6 +17,9 @@ export interface NextContext<State extends object, Actions extends object> {
   patch: ObjectPatch<State>[] | null;
   actions: Actions;
   update: Stream<ObjectPatch<State>>;
+  register: <Components extends Component<any, any>[]>(
+    ...components: Components
+  ) => void;
 }
 
 export type NextFn<State extends object, Actions extends object> = (

@@ -1,0 +1,44 @@
+@import "../Theme/variables";
+@import "../Theme/utils";
+
+#filter-bar {
+  // margin: toRem(0 -2px);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: toRem(4px);
+  background-color: rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  @include desktopView {
+    top: 5px;
+    padding: toRem(6px);
+  }
+}
+.filter {
+  border: none;
+  background-color: $darker-blue;
+  color: $light-blue;
+  padding: toRem(6px 8px);
+  cursor: pointer;
+  transition-duration: 0.2s;
+  transition-property: background-color, color;
+  transition-timing-function: ease;
+  margin: toRem(2px);
+  font-size: toRem(14px);
+  &:hover,
+  &:focus {
+    background-color: darken($medium-blue, 20%);
+    outline: none;
+  }
+  &.active {
+    background-color: $medium-blue;
+    color: #fff;
+  }
+  &:disabled {
+    cursor: default;
+  }
+  @include desktopView {
+    padding: toRem(8px 12px);
+    font-size: 1rem;
+  }
+}

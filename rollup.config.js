@@ -1,14 +1,33 @@
 import ts from "@wessberg/rollup-plugin-ts";
 import cjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
-import sass from "rollup-plugin-sass";
 import minifyhtml from "rollup-plugin-minify-html-literals";
 import { terser } from "rollup-plugin-terser";
+import autoprefixer from "autoprefixer";
+import styles from "rollup-plugin-styles";
+import svgSprite from "rollup-plugin-svg-sprite";
+import progress from "rollup-plugin-progress";
+
+const extractable = /^(entry)\.css$/;
+const dynamicModules = /(mergerino|rythe|Supervisor|Gallery|Swatch|Filter|ScopedStorage)/;
+const dynamicStyling = /(chroma|spinny)/;
 
 export default {
   input: ["./src/entry.ts"],
   preserveEntrySignatures: "allow-extension",
+  manualChunks(id) {
+    if (id.includes("lit-html")) {
+      return "vendor";
+    }
+    if (dynamicModules.test(id)) {
+      return "dynamic";
+    }
+    if (dynamicStyling.test(id)) {
+      return "extra-styles";
+    }
+  },
   plugins: [
+    progress(),
     resolve({
       mainFields: ["module", "main"],
     }),
@@ -16,15 +35,33 @@ export default {
       include: "./node_modules/**",
     }),
     ts({
+      browserslist: false,
       tsconfig: "./tsconfig.json",
     }),
-    sass(),
+    styles({
+      autoModules: true,
+      mode: "extract",
+      extensions: [".scss", ".css"],
+      plugins: [autoprefixer],
+      minimize: false,
+      onExtract: ({ name }) => extractable.test(name),
+      sass: {
+        impl: "sass",
+        fibers: true,
+        outputStyle: "compressed",
+      },
+    }),
     minifyhtml(),
+    svgSprite({
+      outputFolder: "static/js",
+    }),
   ],
   output: {
     dir: "./static/js/",
     format: "esm",
     sourcemap: true,
+    chunkFileNames: "[name]-[format].js",
+    assetFileNames: "[name]-[ext][extname]",
     plugins: [
       terser({
         mangle: {

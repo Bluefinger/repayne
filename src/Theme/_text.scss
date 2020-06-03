@@ -1,0 +1,46 @@
+@import "./variables";
+
+body {
+  margin: 0;
+  font-family: Fira Sans;
+  font-weight: 300;
+}
+
+button, input, select, optgroup, textarea {
+  font-family: Fira Sans;
+  font-weight: 300;
+}
+
+a {
+  &:focus {
+    z-index: 1;
+    outline: $medium-blue dashed 2px;
+  }
+}
+
+h1, .post-title {
+  font-variant: small-caps;
+  font-weight: 600;
+}
+
+.sidebar .menu li a {
+  font-weight: 300;
+  font-variant: small-caps;
+}
+
+.post {
+  &-meta {
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: -0.015em;
+    .tag {
+      font-style: italic;
+    }
+  }
+}
+
+.title {
+  display: inline-block;
+  font-variant: small-caps;
+}

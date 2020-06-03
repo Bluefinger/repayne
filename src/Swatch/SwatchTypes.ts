@@ -1,5 +1,5 @@
 export type Themes = {
-  [key: string]: () => Promise<typeof import("*.scss")>;
+  [key: string]: () => Promise<any>;
 };
 
 export type SwatchState = {

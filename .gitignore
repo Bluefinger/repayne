@@ -53,6 +53,9 @@ typings/
 # Optional eslint cache
 .eslintcache
 
+# IDE spam
+.vscode
+
 # Microbundle cache
 .rpt2_cache/
 .rts2_cache_cjs/
@@ -105,7 +108,7 @@ public
 
 # Built directories
 resources/_gen
-static/js
+static/
 
 # Content for now
 content/

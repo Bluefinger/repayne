@@ -1,0 +1,127 @@
+.sidebar {
+  text-align: center;
+  &-about {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-basis: 100%;
+    margin-bottom: toRem(5px);
+  }
+  &-logo {
+    max-width: toRem(80px);
+  }
+  &-title {
+    padding: toRem(0 5px);
+  }
+  &-content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: toRem(10px);
+  }
+  .menu {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-grow: 1;
+    &-section {
+      flex: 1 1 5%;
+      display: flex;
+    }
+    > li {
+      flex: 1 1 auto;
+      display: flex;
+      flex-grow: 1;
+      margin: toRem(1px);
+      > a {
+        display: block;
+        padding: toRem(6px 8px);
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        justify-content: center;
+      }
+    }
+    &-social {
+      max-width: toRem(100px);
+    }
+  }
+  @include desktopView {
+    text-align: left;
+    width: 100px;
+    // border-right: 2px solid;
+    // border-image: linear-gradient(180deg, $dark-blue, $light-blue) 1 / 2px stretch;
+    &-about {
+      display: block;
+      margin-bottom: toRem(10px);
+    }
+    &-content {
+      position: sticky;
+      top: 10px;
+      bottom: 20px;
+      will-change: transform;
+    }
+    &-title {
+      //display: none;
+      margin: 0;
+      padding: toRem(0 5px);
+      text-align: center;
+      line-height: 1;
+      > a {
+        display: block;
+      }
+    }
+    &-logo {
+      width: 100%;
+    }
+    .menu > li {
+      margin: toRem(1px 0 0 0);
+    }
+    .menu {
+      flex-direction: column;
+      li {
+        height: 34px;
+        // margin-bottom: 1px;
+        a {
+          display: flex;
+          padding: 5px;
+          flex-grow: 1;
+          overflow: hidden;
+          height: 34px;
+          width: 100%;
+          align-items: center;
+          position: relative;
+          justify-content: center;
+          transition: 0.3s background-color ease;
+        }
+        span {
+          display: block;
+        }
+      }
+      &-social {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        li {
+          width: 40px;
+          height: 40px;
+          a {
+            height: 40px;
+          }
+
+          margin-left: toRem(1px);
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.social-links {
+  max-width: toRem(100px);
+  @include desktopView {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,26 @@
+.grid {
+  display: grid;
+  &-gapped {
+    gap: toRem(10px 10px);
+  }
+}
+
+.layout {
+  display: grid;
+  grid-template-areas: "header" "page" "footer";
+  grid-template-columns: 1fr;
+  &-header {
+    grid-area: header;
+  }
+  &-content {
+    grid-area: page;
+  }
+  &-footer {
+    grid-area: footer;
+  }
+  @include desktopView {
+    grid-template-areas: "header page" "header footer";
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: 1fr 50px;
+  }
+}

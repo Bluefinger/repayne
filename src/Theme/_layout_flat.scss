@@ -1,0 +1,6 @@
+@media (min-width: $small-landscape) and (orientation: landscape),
+  (min-width: $small-portrait) and (orientation: portrait) {
+    .sidebar-content {
+      display: flex;
+    }
+  }

@@ -1,0 +1,130 @@
+.page {
+  // display: flex;
+  // flex-direction: column;
+  // flex-wrap: wrap;
+  min-height: 100vh;
+  // &-section {
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: space-between;
+  //   align-items: center;
+  // }
+}
+
+.hidden {
+  display: none;
+}
+
+.icon {
+  &.small {
+    width: toRem(24px);
+    height: toRem(24px);
+  }
+  &.medium {
+    width: toRem(32px);
+    height: toRem(32px);
+  }
+}
+
+.chroma {
+  padding: 5px;
+}
+
+.footer {
+  width: 100%;
+  text-align: center;
+}
+
+.title-bar {
+  display: none;
+}
+
+.img {
+  &-fluid {
+    max-width: 100%;
+    display: block;
+  }
+}
+
+.homepage {
+  &-header {
+    padding: toRem(5px 10px 0);
+    margin-top: toRem(20px);
+    .title {
+      margin: 0;
+      display: inline-block;
+    }
+  }
+  &-content {
+    overflow: hidden;
+    padding: toRem(0 10px);
+  }
+}
+
+.post {
+  padding: 10px;
+  &-icon {
+    float: right;
+    margin: toRem(10px 0 0 10px);
+    .icon {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  &-full {
+    margin: 20px;
+    padding: 20px;
+    max-width: toRem(1200px);
+  }
+  &-title {
+    margin: toRem(8px 0);
+    letter-spacing: -0.015em;
+  }
+  &-summary {
+    margin: 10px 0;
+  }
+  &-img {
+    margin: 0;
+  }
+  &-list &-summary &-img {
+    margin: toRem(-10px -10px 0);
+  }
+  .tags {
+    list-style: none;
+    padding: 0;
+    display: inline-block;
+    margin: toRem(0 0 0 10px);
+  }
+  .tag {
+    display: inline-block;
+    margin-right: 5px;
+    &::before {
+      content: "#";
+    }
+  }
+}
+
+#swatch-app {
+  flex-basis: 100%;
+}
+
+ul.pagination {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  li {
+    display: inline-block;
+    margin: 0 2px;
+    > a,
+    > span {
+      display: block;
+      padding: 7px;
+      min-width: 32px;
+      text-align: center;
+    }
+    > a {
+      transition: 0.2s background-color ease, 0.2s color ease;
+    }
+  }
+}

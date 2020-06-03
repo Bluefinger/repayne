@@ -1,0 +1,9 @@
+$small-landscape: 640px;
+$small-portrait: 800px;
+$large-screen: 2048px;
+
+$light-blue: rgb(148, 251, 255);
+$dark-blue: rgb(23, 45, 79);
+$darker-blue: rgb(33, 37, 40);
+$medium-blue: mix($light-blue, $dark-blue);
+$darkened-blue: darken($medium-blue, 30%);

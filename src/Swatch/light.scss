@@ -1,4 +1,141 @@
-body.light {
-  background-color: #ddd;
+@import "../Theme/variables";
+
+@mixin lighttheme {
+  background: repeating-linear-gradient(
+      -10deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 10px,
+      rgba(255, 255, 255, 0.075) 10px,
+      rgba(255, 255, 255, 0.075) 11px
+    ),
+    repeating-linear-gradient(
+      40deg,
+      rgba(148, 251, 255, 0),
+      rgba(148, 251, 255, 0) 10px,
+      rgba(148, 251, 255, 0.15) 10px,
+      rgba(148, 251, 255, 0.15) 11px
+    ),
+    linear-gradient(0deg, $dark-blue, $light-blue);
+  background-color: rgb(242, 242, 242);
   color: #333;
+  a {
+    color: $medium-blue;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .title {
+    background: linear-gradient(to right, $dark-blue -20%, $light-blue 50%);
+    background-clip: text;
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  .sidebar {
+    background: linear-gradient(0deg, $dark-blue, $light-blue);
+  }
+
+  .footer {
+    color: #fff;
+    // background-color: transparentize($dark-blue, 0.5);
+  }
+
+  .homepage {
+    &-header {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 1) 50px,
+        rgba(255, 255, 255, 0)
+      );
+    }
+    &-content,
+    &-post {
+      background-color: #fff;
+    }
+  }
+
+  .post {
+    background-color: #fff;
+    &-meta {
+      color: $medium-blue;
+    }
+    &-icon .icon {
+      fill: $medium-blue;
+      stroke: $medium-blue;
+    }
+    &-full .post-title {
+      display: inline-block;
+      background: linear-gradient(to right, $dark-blue -20%, $light-blue 50%);
+      background-clip: text;
+      color: rgba(0, 0, 0, 0.3);
+    }
+    &-summary .post-title a {
+      text-decoration: none;
+      background: linear-gradient(to right, $dark-blue -20%, $light-blue 50%);
+      background-clip: text;
+      color: rgba(0, 0, 0, 0.3);
+      transition: 0.2s color ease;
+      &:hover {
+        color: mix($light-blue, $dark-blue);
+        text-decoration: none;
+      }
+    }
+    &-title {
+      color: $medium-blue;
+    }
+    &-portfolio {
+      border: 2px dashed $medium-blue;
+    }
+    .tag {
+      color: $medium-blue;
+    }
+    &-gallery {
+      &-link {
+        border: 2px solid #fff;
+      }
+    }
+  }
+
+  ul.pagination {
+    li {
+      > a {
+        background-color: #fff;
+        &:hover {
+          background-color: lighten($medium-blue, 35%);
+        }
+      }
+      &.current {
+        > span {
+          background-color: $medium-blue;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .menu {
+    li {
+      a {
+        color: #fff;
+        background-color: transparentize($dark-blue, 0.5);
+      }
+      &:hover {
+        a {
+          background-color: transparentize(rgb(0, 0, 0), 0.5);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (prefers-color-scheme: light) {
+  body {
+    @include lighttheme;
+  }
+}
+
+body.light {
+  @include lighttheme;
 }

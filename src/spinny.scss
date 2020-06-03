@@ -1,0 +1,96 @@
+@import "./Theme/variables";
+
+@keyframes spinny {
+  0% {
+    transform-origin: 50%;
+    transform: translate3d(-50%, -50%, 0) rotateZ(0deg);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotateZ(360deg);
+  }
+}
+
+.spinny {
+  &-container {
+    text-align: center;
+  }
+  &-loader {
+    display: inline-block;
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 10px;
+    > div {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 60px;
+      height: 60px;
+      transform: translate3d(-50%, -50%, 0);
+      border-radius: 200px;
+      background-color: $medium-blue;
+    }
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+
+      border-radius: 200px;
+      border-style: solid;
+      border-width: 15px;
+      border-color: $medium-blue transparent $medium-blue transparent;
+
+      animation-name: spinny;
+      animation-duration: 0.6s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+    &::after {
+      width: 140px;
+      height: 140px;
+      animation-direction: alternate-reverse;
+    }
+    &::before {
+      width: 100px;
+      height: 100px;
+    }
+    &.error {
+      > div {
+        background-color: #ec5840;
+      }
+      &::before,
+      &::after {
+        border-color: #ec5840 transparent #ec5840 transparent;
+        animation-timing-function: linear;
+      }
+      &::before {
+        animation-duration: 2.5s;
+      }
+      &::after {
+        animation-duration: 3.8s;
+        animation-direction: reverse;
+      }
+    }
+    &.process {
+      > div {
+        background-color: rgb(58, 219, 118);
+      }
+      &::before,
+      &::after {
+        border-color: rgb(58, 219, 118) transparent;
+        animation-timing-function: ease;
+      }
+      &::before {
+        animation-duration: 1.5s;
+      }
+      &::after {
+        animation-duration: 3s;
+        animation-direction: normal;
+      }
+    }
+  }
+}

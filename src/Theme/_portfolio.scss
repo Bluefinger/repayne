@@ -1,0 +1,105 @@
+.filterable {
+  &-list {
+    display: grid;
+    gap: toRem(10px);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    // display: flex;
+    // flex-wrap: wrap;
+    // align-content: stretch;
+    // justify-content: flex-start;
+    // align-items: stretch;
+    padding: toRem(10px);
+    margin: 0;
+    @include desktopView {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+  }
+  &-item {
+    transition: 0.2s flex ease, 0.2s transform ease, 0.2s opacity ease;
+    opacity: 1;
+    flex: 1 1 250px;
+    transform: scale3d(1, 1, 1);
+    transform-style: preserve-3d;
+    opacity: 1;
+    margin: 0;
+    max-width: 280px;
+    .post-icon {
+      position: relative;
+      padding-bottom: calc(20px + 100%);
+      margin: -10px -10px 0;
+      > a,
+      .icon {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      .icon {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+    }
+    .post-img > a {
+      display: block;
+    }
+    .tags,
+    .post-meta {
+      display: inline;
+      margin: 0;
+    }
+    .post-published {
+      margin: 0 0.625rem 0 0;
+      font-size: 1.1rem;
+      color: $medium-blue;
+    }
+    .post-title {
+      display: inline-block;
+      margin-right: toRem(10px);
+    }
+    &.hiding {
+      transform: scale3d(0.75, 0.75, 1);
+      opacity: 0.3;
+    }
+    &.active {
+      outline: $medium-blue dashed 2px;
+    }
+  }
+}
+
+.post-summary.filterable-item {
+  .post-icon {
+    position: relative;
+    padding-bottom: calc(20px + 100%);
+    margin: -10px -10px 0;
+    width: calc(100% + 20px);
+    float: none;
+    > a,
+    .icon {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .icon {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+}
+
+.section {
+  &-portfolio {
+    text-align: center;
+    @include desktopView {
+      text-align: left;
+      .title {
+        margin: toRem(20px 10px);
+      }
+    }
+  }
+}
+

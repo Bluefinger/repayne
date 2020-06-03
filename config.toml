@@ -4,8 +4,21 @@ title = "Code Payne"
 theme = "bastet"
 pluralizeListTitles = false
 paginate = 10
+pygmentsCodeFences = true
 pygmentsUseClasses = true
 disableKinds = ["taxonomy", "taxonomyTerm"]
+
+[params]
+description = "The personal blog and portfolio of an introverted Front-End Web Developer."
+author = "Gonçalo Payne"
+alias = "Bluefinger"
+image = "img/code-payne-logo.svg"
+
+[markup]
+defaultMarkdownHandler = "goldmark"
+
+[markup.goldmark.renderer]
+unsafe = true
 
 [permalinks]
 blog = "/:section/:year/:month/:title/"
@@ -15,12 +28,11 @@ portfolio = "/:section/:year/:title/"
 changefreq = "weekly"
 priority = 0.5
 
-[[menu.main]]
-name = "Home"
-identifier = "home"
-url = "/"
-weight = -10
-
+# [[menu.main]]
+# name = "Home"
+# identifier = "home"
+# url = "/"
+# weight = -10
 [[menu.main]]
 name = "Portfolio"
 identifier = "portfolio"

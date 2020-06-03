@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en-gb">
-  {{- partial "head.html" . -}}
-  <body>
-    <div class="page">
-    {{- partial "header.html" . -}}
-    <main id="main-content" aria-role="main">
-      {{- block "main" . }}{{- end }}
-    </main>
-    {{- partial "footer.html" . -}}
-  </div>
-  </body>
+<html lang="{{ .Site.LanguageCode }}">
+{{- partial "head.html" . -}}
+<body>
+<div class="page layout">
+{{- partial "header.html" . -}}
+<!--<div class="page-desection">-->
+<main id="main-content" class="layout-page">
+{{- block "main" . }}{{- end }}
+</main>
+{{- partial "footer.html" . -}}
+<!--</div>-->
+</div>
+</body>
 </html>

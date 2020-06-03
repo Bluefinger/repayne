@@ -1,12 +1,12 @@
-import { fromDOMEvent, map, merge, filter } from "rythe";
+import type { Stream } from "rythe";
 import type { Component } from "../Supervisor";
-import type {
-  GalleryState,
-  GalleryActions,
-  GallerySlide,
-} from "./GalleryTypes";
+import type { GalleryState, GalleryActions } from "./GalleryTypes";
+import { galleryInit, makeCaptureStream } from "./GalleryUtils";
 
 const empty = {};
+
+let capture: Stream<KeyboardEvent> | null;
+let lastFocusedElement: HTMLElement | null;
 
 export const GalleryComponent = (
   id = "gallery"
@@ -74,46 +74,24 @@ export const GalleryComponent = (
   service: ({ state }) => {
     const gallery = state[id];
     if (!gallery.initialised) {
-      const elements = document.querySelectorAll(`a[data-${id}]`);
-      const slides: GallerySlide[] = [];
-      elements.forEach((element) => {
-        const src = element.getAttribute("href");
-        const description = element.getAttribute(`data-${id}-description`);
-        if (src) {
-          slides.push({
-            element,
-            src,
-            description,
-          });
-        }
-      });
-      return {
-        state: {
-          [id]: {
-            initialised: true,
-            slides,
+      return galleryInit(id);
+    } else if (gallery.showing !== null) {
+      if (!capture) {
+        lastFocusedElement = document.querySelector<HTMLElement>(":focus");
+        lastFocusedElement?.blur();
+        return {
+          next: ({ actions }) => {
+            capture = makeCaptureStream(actions);
           },
-        },
-        next: slides.length
-          ? ({ actions }) => {
-              const enterKey = (event: KeyboardEvent) => event.key === "Enter";
-              const slideEvents = slides.map(({ element, src }) =>
-                merge(
-                  fromDOMEvent<MouseEvent>(element, "click"),
-                  fromDOMEvent<KeyboardEvent>(element, "keypress").pipe(
-                    filter(enterKey)
-                  )
-                ).pipe(
-                  map((event) => {
-                    event.preventDefault();
-                    return src;
-                  })
-                )
-              );
-              merge(...slideEvents).pipe(map(actions.show));
-            }
-          : undefined,
-      };
+        };
+      }
+    } else if (capture) {
+      capture.end(true);
+      capture = null;
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+        lastFocusedElement = null;
+      }
     }
     return empty;
   },

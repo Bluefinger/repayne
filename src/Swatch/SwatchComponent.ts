@@ -1,15 +1,19 @@
 import type { Component } from "../Supervisor";
-import { injectCss } from "../utils/styleInject";
 import type { SwatchState, Themes, SwatchActions } from "./SwatchTypes";
 import { getScopedStorage, StorageType } from "../ScopedStorage";
 
 const themes: Themes = {
-  light: () => import("./light.scss"),
-  dark: () => import("./dark.scss"),
-  ergot: () => Promise.reject(),
+  light: () => Promise.resolve(),
+  dark: () => Promise.resolve(),
 };
 
 const empty = Object.freeze({});
+
+const switchClasses = (next: string, prev?: string) => {
+  const body = document.body;
+  if (prev) body.classList.remove(prev);
+  body.classList.add(next);
+};
 
 const validateSelectedTheme = (
   themeKeys: (keyof Themes)[],
@@ -31,12 +35,17 @@ export const SwatchComponent = (
     id,
     initial: (): SwatchState => {
       const themeKeys = Object.keys(themes);
+      const preloaded = ["light", "dark"];
+      const key = validateSelectedTheme(themeKeys, store.get());
+      if (preloaded.includes(key)) {
+        switchClasses(key);
+      }
       return {
         [id]: {
           themes: themeKeys,
-          selected: validateSelectedTheme(themeKeys, store.get()),
+          selected: key,
           loading: false,
-          loaded: [],
+          loaded: preloaded,
         },
       };
     },
@@ -68,7 +77,6 @@ export const SwatchComponent = (
       const { prevState, state } = context;
       const prevSelected = prevState[id].selected;
       const nextSelected = state[id].selected;
-      const body = document.body;
       if (prevSelected !== nextSelected || !state[id].loaded.length) {
         if (!state[id].loaded.includes(nextSelected)) {
           const fetchingStyles = themes[nextSelected]();
@@ -80,10 +88,8 @@ export const SwatchComponent = (
             },
             next: ({ actions }) =>
               fetchingStyles
-                .then((styles) => {
-                  injectCss(styles.default);
-                  body.classList.remove(prevSelected);
-                  body.classList.add(nextSelected);
+                .then(() => {
+                  switchClasses(nextSelected, prevSelected);
                   store.set(nextSelected);
                   actions.stopSwatchLoading(nextSelected);
                 })
@@ -92,7 +98,7 @@ export const SwatchComponent = (
                 }),
           };
         } else {
-          body.classList.replace(prevSelected, nextSelected);
+          switchClasses(nextSelected, prevSelected);
           return {
             state: {
               [id]: {

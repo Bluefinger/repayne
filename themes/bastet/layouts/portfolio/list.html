@@ -1,22 +1,29 @@
 {{ define "main" }}
-<article>
-  <h1>{{ .Title }}</h1>
-  <ul class="posts-list">
-    {{ range $index, $element := .Paginator.Pages }}
-    <li class="posts-list-item">
-      <a class="posts-list-item-title" href="{{ .Permalink }}">{{ .Title }}</a>
-      <span class="posts-list-item-description">
-        {{ .ReadingTime }} min read -
-        {{ .PublishDate.Format "Jan 2, 2006" }}
-      </span>
-      <ul class="tags">
-        {{ range .Params.tags }}
-        <li class="tag">{{ . }}</li>
-        {{ end }}
-      </ul>
-    </li>
-    {{ end }}
-  </ul>
+<article class="section-portfolio portfolio-article">
+  <h2 class="title">{{ .Title }}</h2>
+  <div id="filter-bar" class="app"></div>
+  <div class="post-list filterable-list">{{ range $index, $element := .Paginator.Pages }}
+    <article class="post post-summary filterable-item {{ range .Params.tags }} type-{{ . }}{{ end }}">{{ if .Params.Icon }}
+      <div class="post-icon">
+        <a href="{{ .Permalink }}"><svg class="icon medium" aria-labelledby="icon-{{.File.UniqueID}}" role="img">
+          <title id="icon-{{.File.UniqueID}}">{{.Title}}</title>
+          <use xlink:href="js/sprites.svg#{{.Params.Icon}}"></use>
+        </svg></a>
+      </div>{{ else }}{{with .Resources.GetMatch "**-header.*"}}{{ $image := .Fill "300x300 Lanczos" }}
+      <div class="post-img">
+        <a href="{{ $element.Permalink }}">
+          <img class="img-fluid" src="{{ $image.Permalink }}" alt="{{ .Title }}">
+        </a>
+      </div>{{end}}{{end}}
+      <h3 class="post-title post-list-item-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+      <div class="post-meta">
+        <time class="post-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">{{ .PublishDate.Format "2006" }}</time>
+        <ul class="tags">{{ range .Params.tags }}
+          <li class="tag tag-{{ . }}">{{ . }}</li>{{ end }}
+        </ul>
+      </div>
+    </article>{{ end }}
+  </div>
   {{ partial "pagination.html" $ }}
 </article>
 {{ end }}

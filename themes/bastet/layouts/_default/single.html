@@ -1,31 +1,24 @@
 {{ define "main" }}
-<article class="post">
-  <header class="post-header">
-    <h1 class="post-title">{{ .Title }}</h1>
-    <div class="post-meta">
-      <time class="post-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">
-        {{ .PublishDate.Format "Jan 2, 2006" }}
-      </time>
-      <span class="post-reading">{{ .ReadingTime }} min read</span>
-      <div class="post-tags">
-        {{ range .Params.tags }}
-        <span class="tag">#{{ . }}</span>
-        {{ end }}
-      </div>
-    </div>
-  </header>
-  <div class="post-content">
-    {{ .Content }}
+
+<article class="post post-full">
+<header class="post-header">
+  <h2 class="post-title">{{ .Title }}</h2>
+  <div class="post-meta">
+    <time class="post-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">
+      {{ .PublishDate.Format "Jan 2, 2006" }}
+    </time>
+    <span class="post-reading">{{ .ReadingTime }} min read</span>
+    <ul class="tags">{{ range .Params.tags }}
+      <li class="tag">{{ . }}</li>{{ end }}
+    </ul>
   </div>
-  
-  {{- with .Resources.ByType "image" -}}
-  <div class="post-gallery">
-    {{ range . -}}
-    {{ $thumb := .Fill "300x300 Lanczos" }}
-    <a href="{{ .Permalink }}" data-gallery data-gallery-description="{{ .Title }}"><img src="{{ $thumb.Permalink }}" alt="{{ .Title }}" ></a>
-    {{- end -}}
-  </div>
-  {{- end -}}
-  <div id="gallery-div" class="app"></div>
+</header>
+<div class="post-content">
+{{ .Content }}
+</div>{{- with .Resources.ByType "image" -}}
+<div class="post-gallery">{{ range . -}}{{ $thumb := .Fill "300x300 Lanczos" }}
+  <a class="post-gallery-link" href="{{ .Permalink }}" data-gallery data-gallery-description="{{ .Title }}"><img class="post-gallery-thumb" src="{{ $thumb.Permalink }}" alt="{{ .Title }}" ></a>{{- end -}}
+</div>
+<div id="gallery-div" class="app"></div>{{- end -}}
 </article>
 {{ end }}

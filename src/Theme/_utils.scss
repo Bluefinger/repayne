@@ -1,0 +1,18 @@
+@function toRem($sizes) {
+  $rem: ();
+  @each $size in $sizes {
+    $resized: 0;
+    @if $size != $resized {
+      $resized: #{$size / 16px}rem;
+    }
+    $rem: append($rem, $resized);
+  }
+  @return $rem;
+}
+
+@mixin desktopView {
+  @media (min-width: $small-landscape) and (orientation: landscape),
+    (min-width: $small-portrait) and (orientation: portrait) {
+      @content;
+    }
+}

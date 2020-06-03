@@ -10,3 +10,5 @@ export const injectCss = (css: string, style?: HTMLStyleElement) => {
   style.innerText = css;
   return style;
 };
+
+export const importCss = ({ css }: typeof import("*.scss")) => injectCss(css);

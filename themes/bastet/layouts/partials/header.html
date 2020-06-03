@@ -1,39 +1,37 @@
-<header class="sidebar">
-  <div id="swatch-app" class="app"></div>
-  <div class="sidebar-about">
-    {{ if .Site.Params.image }}<img alt="{{ .Site.Params.author }}" src="/{{ .Site.Params.image }}" class="author-pic" />{{ end }}
-    <h1>
+<header class="sidebar layout-header">
+<div class="sidebar-content">
+  <div class="sidebar-about">{{ if .Site.Params.image }}
+    <img alt="{{ .Site.Params.author }}" src="/{{ .Site.Params.image }}" class="sidebar-logo" />{{ end }}
+    <h1 class="sidebar-title">
       <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
     </h1>
-    <p class="lead">
-      {{ with.Site.Params.description }} {{.}} {{ else }} Bastet Theme for
-      Hugo. Much war, very cat, no doge. {{ end }}
-    </p>
   </div>
-  <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
-    <button class="menu-icon fa fa-bars fa-lg" type="button" data-toggle></button>
+  <div class="title-bar">
+    <button class="menu-icon fa fa-bars fa-lg" type="button" ></button>
     <div class="title-bar-title">Menu</div>
   </div>
-
-  <nav class="menu-centered" id="main-menu">
-    <ul class="menu" data-drilldown-menu>
-      {{ $currentPage := . }}
-      {{ range .Site.Menus.main }}
+  <nav class="menu-section" id="main-menu" aria-label="Main Menu">
+    <ul class="menu">{{ $currentPage := . }}{{ range .Site.Menus.main }}
       <li>
         <a class="menu-item{{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }} active{{end}}"
           href="{{ .URL }}" title="{{ .Title }}">
-          {{ .Name }}
+          <span>{{ .Name }}</span>
         </a>
-      </li>
-      {{ end }}
+      </li>{{ end }}
     </ul>
   </nav>
-
-  <ul class="social-menu">
-    {{ range.Site.Data.social.websites }}
-    <li>
-      <a target="_blank" href="{{.url}}" title="{{.name}}"><i class="fa {{.icon}}"></i><span>{{.name}}</span></a>
-    </li>
-    {{ end }}
-  </ul>
+  <aside class="menu-section social-links" aria-label="Social Media Menu">
+    <ul class="menu menu-social">{{ range.Site.Data.social.websites }}
+      <li>
+        <a rel="noopener" target="_blank" href="{{.url}}" title="{{.name}}">
+          <svg class="icon small" aria-labelledby="icon-{{.icon}}" role="img">
+            <title id="icon-{{.icon}}">{{.name}}</title>
+            <use xlink:href="js/sprites.svg#{{.icon}}"></use>
+          </svg>
+        </a>
+      </li>{{ end }}
+    </ul>
+  </aside>
+  <div id="swatch-app" class="app"></div>
+</div>
 </header>

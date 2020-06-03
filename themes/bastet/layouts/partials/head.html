@@ -1,14 +1,24 @@
-<title>
-  {{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}
-</title>
-<meta charset="utf-8" />
-<meta name="generator" content="Hugo {{ hugo.Version }}" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="author" content="{{ .Site.Params.author }}" />
-<meta name="description" content="{{ .Description }}" />
-{{ with .OutputFormats.Get "rss" -}}
-{{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
-{{ end -}}
-<base href="{{ .Site.BaseURL }}" />
-{{/*  <link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>  */}}
-<script type="module" src="js/entry.js"></script>
+<head>
+  <title>
+    {{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}
+  </title>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Hugo {{ hugo.Version }}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="{{ .Site.Params.author }}" />
+  <meta name="description" content="{{ .Description }}" />
+  <meta name="color-scheme" content="light dark" />
+  <base href="{{ .Site.BaseURL }}" />
+  <link rel="preload" href="js/entry-css.css" as="style" />
+  <link rel="modulepreload" href="js/entry.js" />
+  <link rel="modulepreload" href="js/dynamic-es.js" />
+  <link rel="modulepreload" href="js/vendor-es.js" />
+  {{ with .OutputFormats.Get "rss" -}}
+  {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+  {{ end -}}
+  {{/*  <link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>  */}}
+  <link href='js/entry-css.css' rel='stylesheet' type='text/css'>
+  <script type="module" src="js/entry.js"></script>
+{{ printf "<!--\n  Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com \n  License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)\n-->" | safeHTML }}
+{{ printf "<!--\n  All product names, logos, and brands are property of their respective owners.\n  All company, product and service names used in this website are for identification purposes only.\n  Use of these names, logos, and brands does not imply endorsement.\n-->" | safeHTML }}
+</head>

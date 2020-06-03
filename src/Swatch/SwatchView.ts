@@ -2,10 +2,10 @@ import type { ViewFn } from "../Supervisor";
 import { html } from "lit-html";
 import { classMap } from "lit-html/directives/class-map";
 import { SwatchState, SwatchActions } from "./SwatchTypes";
-import styles from "./swatch.scss";
-import { injectCss } from "../utils/styleInject";
+import "./swatch.scss";
+//import { injectCss } from "../utils/styleInject";
 
-injectCss(styles);
+//injectCss(styles);
 
 export const SwatchView = (
   id = "swatch"

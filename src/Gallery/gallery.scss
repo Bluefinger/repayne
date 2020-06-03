@@ -1,0 +1,74 @@
+@import "../Theme/utils";
+@import "../Theme/variables";
+
+.gallery {
+  &.hidden {
+    z-index: -1;
+    display: none;
+  }
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
+  }
+  &-prev {
+    order: 1;
+  }
+  &-next {
+    order: 3;
+  }
+  &-slide {
+    order: 2;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    > img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+  &-img {
+    &-description {
+      padding: toRem(10px 15px);
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+  }
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: toRem(50px);
+    height: toRem(50px);
+    border: none;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: 0.2s background-color ease;
+    cursor: pointer;
+    padding: 0;
+    .icon {
+      transition: 0.2s fill ease;
+      fill: rgba(255, 255, 255, 0.6);
+    }
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      .icon {
+        fill: rgba(255, 255, 255, 1);
+      }
+      &:active {
+        background-color: rgba(255, 255, 255, 0.3);
+        transition: none;
+      }
+    }
+  }
+}

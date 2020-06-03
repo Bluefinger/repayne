@@ -1,4 +1,157 @@
+@import "../Theme/variables";
+@import "../Theme/utils";
+
+@mixin darktheme {
+  background: repeating-linear-gradient(
+      -10deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 10px,
+      rgba(255, 255, 255, 0.075) 10px,
+      rgba(255, 255, 255, 0.075) 11px
+    ),
+    repeating-linear-gradient(
+      40deg,
+      rgba(148, 251, 255, 0),
+      rgba(148, 251, 255, 0) 10px,
+      rgba(148, 251, 255, 0.15) 10px,
+      rgba(148, 251, 255, 0.15) 11px
+    ),
+    linear-gradient(180deg, $darker-blue, $darkened-blue);
+  background-color: rgb(12, 12, 12);
+  color: #fff;
+  a {
+    color: $medium-blue;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .title {
+    background: linear-gradient(to left, $darkened-blue -170%, $light-blue 90%);
+    background-clip: text;
+    color: rgba(255, 255, 255, 0);
+  }
+
+  .sidebar {
+    // background: linear-gradient(180deg, $dark-blue, $light-blue);
+    background: linear-gradient(90deg, $darker-blue, $darkened-blue);
+    .sidebar-title > a {
+      background: linear-gradient(to left, rgb(23, 45, 79) -170%, rgb(148, 251, 255) 90%);
+      background-clip: text;
+      color: transparent;
+      transition: 0.2s color ease;
+      &:hover {
+        color: $medium-blue;
+        text-decoration: none;
+      }
+    }
+    @include desktopView {
+      background: linear-gradient(180deg, $darker-blue, $darkened-blue);
+    }
+  }
+
+  .footer {
+    color: #fff;
+    // background-color: transparentize($light-blue, 0.9);
+  }
+
+  .homepage {
+    &-header {
+      background: linear-gradient(
+        90deg,
+        $darker-blue,
+        $darker-blue 50px,
+        rgba(255, 255, 255, 0)
+      );
+    }
+    &-content,
+    &-post {
+      background-color: $darker-blue;
+    }
+  }
+
+  .post {
+    background-color: $darker-blue;
+    &-meta {
+      color: $medium-blue;
+    }
+    &-icon .icon {
+      fill: $medium-blue;
+      stroke: $medium-blue;
+    }
+    &-full .post-title {
+      display: inline-block;
+      background: linear-gradient(to left, $darkened-blue -170%, $light-blue 90%);
+      background-clip: text;
+      color: rgba(255, 255, 255, 0);
+    }
+    &-summary .post-title a {
+      text-decoration: none;
+      background: linear-gradient(to left, $darkened-blue -170%, $light-blue 90%);
+      background-clip: text;
+      color: rgba(255, 255, 255, 0);
+      transition: 0.2s color ease;
+      &:hover {
+        color: mix($light-blue, $dark-blue);
+        text-decoration: none;
+      }
+    }
+    &-portfolio {
+      border: 2px dashed $medium-blue;
+    }
+    .tag {
+      color: $medium-blue;
+    }
+    &-gallery {
+      &-link {
+        border: 2px solid $darker-blue;
+      }
+    }
+  }
+
+  ul.pagination {
+    li {
+      > a {
+        background-color: $darker-blue;
+        &:hover {
+          color: #fff;
+          background-color: $medium-blue;
+        }
+      }
+      &.current {
+        > span {
+          background-color: $medium-blue;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .menu {
+    li {
+      a {
+        color: #fff;
+        background-color: transparentize($light-blue, 0.9);
+      }
+      &:hover {
+        a {
+          background-color: transparentize($light-blue, 0.7);
+        }
+      }
+    }
+    .icon {
+      fill: #fff;
+    }
+  }
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  body {
+    @include darktheme;
+  }
+}
+
 body.dark {
-  background-color: #333;
-  color: #ddd;
+  @include darktheme;
 }
