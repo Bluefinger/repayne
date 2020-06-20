@@ -1,9 +1,8 @@
 import type { Component } from "../Supervisor";
 import type { FilterState, FilterActions } from "./FilterTypes";
+import { alphabetical, toggleClick, applyFilter } from "./FilterFns";
 
 const empty = Object.freeze({});
-
-const toggleClick = (value: 0 | 1) => (value ? 0 : 1);
 
 export const FilterComponent = (
   filterable: NodeListOf<Element>,
@@ -13,15 +12,15 @@ export const FilterComponent = (
   initial: () => {
     const filters = new Set<string>();
     filterable.forEach((item) => {
-      for (const filter of item.classList.values()) {
-        if (filter.startsWith("type-")) {
-          filters.add(filter.slice(5));
+      for (const cssClass of item.classList.values()) {
+        if (cssClass.startsWith("type-")) {
+          filters.add(cssClass.slice(5));
         }
       }
     });
     return {
       [id]: {
-        filters: [...filters],
+        filters: [...filters].sort(alphabetical),
         selected: null,
         clicked: 0,
       },
@@ -31,11 +30,11 @@ export const FilterComponent = (
     filterBy: (ev, type) => {
       ev.preventDefault();
       updater({
-        [id]: {
-          selected: (current) =>
-            current === type || type === "none" ? null : type,
-          clicked: toggleClick,
-        },
+        [id]: ({ filters, selected, clicked }) => ({
+          filters,
+          selected: selected === type || type === "none" ? null : type,
+          clicked: toggleClick(clicked),
+        }),
       });
     },
   }),
@@ -43,18 +42,7 @@ export const FilterComponent = (
     const filter = state[id];
     const prevFilter = prevState[id];
     if (filter.clicked !== prevFilter.clicked) {
-      filterable.forEach((item) => {
-        item.classList.remove("hiding", "active");
-        item.setAttribute("aria-hidden", "false");
-        if (filter.selected) {
-          if (item.classList.contains(`type-${filter.selected}`)) {
-            item.classList.add("active");
-          } else {
-            item.classList.add("hiding");
-            item.setAttribute("aria-hidden", "true");
-          }
-        }
-      });
+      filterable.forEach(applyFilter, filter);
     }
     return empty;
   },

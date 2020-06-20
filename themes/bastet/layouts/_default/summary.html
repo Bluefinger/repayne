@@ -1,18 +1,18 @@
-<article class="post post-summary post-{{ .Section }}">{{ if .Params.Icon }}
+<article class="post post-summary post-{{ .Section }}" aria-labelledby="post-title-{{.File.UniqueID}}">{{ if .Params.Icon }}
   <div class="post-icon">
-    <a href="{{ .Permalink }}"><svg class="icon medium" aria-labelledby="icon-{{.File.UniqueID}}" role="img">
+    <a href="{{ .Permalink }}" title="{{ .Title }}"><svg class="icon medium" aria-labelledby="icon-{{.File.UniqueID}}" role="img">
       <title id="icon-{{.File.UniqueID}}">{{.Title}}</title>
       <use xlink:href="js/sprites.svg#{{.Params.Icon}}"></use>
     </svg></a>
   </div>{{ else }}{{with .Resources.GetMatch "**-header.*"}}{{ $image := .Fill "600x400 Lanczos" }}
   <div class="post-img">
     <a href="{{ $.Permalink }}">
-      <img class="img-fluid" src="{{ $image.Permalink }}" alt="{{ .Title }}">
+      <img class="img-fluid lazyload" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAAGQCAQAAADYPNYTAAAB5klEQVR42u3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAalT5AAEyprF1AAAAAElFTkSuQmCC" data-src="{{ $image.Permalink }}" alt="{{ .Title }}">
     </a>
   </div>{{end}}{{end}}
   <div class="post-content">
     <header>
-      <h3 class="post-title">
+      <h3 id="post-title-{{.File.UniqueID}}" class="post-title">
         <a href="{{ .Permalink }}">{{ .Title }}</a>
       </h3>
       <div class="post-meta">

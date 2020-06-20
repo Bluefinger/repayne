@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "Fira Sans";
+  src: url("/fonts/firasans-light-webfont.woff2") format("woff2"),
+    url("/fonts/firasans-light-webfont.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("/fonts/firasans-lightitalic-webfont.woff2") format("woff2"),
+    url("/fonts/firasans-lightitalic-webfont.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("/fonts/firasans-semibold-webfont.woff2") format("woff2"),
+    url("/fonts/firasans-semibold-webfont.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("/fonts/firasans-semibolditalic-webfont.woff2") format("woff2"),
+    url("/fonts/firasans-semibolditalic-webfont.woff") format("woff");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}

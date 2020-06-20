@@ -11,8 +11,14 @@
 }
 
 @mixin desktopView {
-  @media (min-width: $small-landscape) and (orientation: landscape),
-    (min-width: $small-portrait) and (orientation: portrait) {
+  @media screen and (min-width: $small-landscape) and (orientation: landscape),
+    screen and (min-width: $small-portrait) and (orientation: portrait) {
       @content;
     }
+}
+
+@mixin largeView {
+  @media screen and (min-width: $large-screen) {
+    @content;
+  }
 }

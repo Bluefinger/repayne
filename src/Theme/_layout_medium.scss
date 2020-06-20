@@ -9,13 +9,11 @@
   .homepage-article, .list-article {
     margin: 0;
     padding: toRem(0 10px);
+    max-width: toRem(1200px);
   }
   .portfolio-article {
     width: 100%;
     max-width: toRem(1600px);
-  }
-  .homepage-article {
-    max-width: toRem(1200px);
   }
   .layout-page {
     display: flex;
@@ -25,57 +23,7 @@
   .page-section {
     width: calc(100% - 100px);
   }
-  .post {
-    &-icon {
-      float: none;
-      margin: 0;
-      position: relative;
-      padding-bottom: 100%;
-      flex: 0 1 200px;
-      align-self: stretch;
-      order: 1;
-      .icon {
-        width: 200px;
-        height: 200px;
-      }
-    }
-    &-content {
-      flex: 1 1 400px;
-    }
-    &-portfolio, &-blog {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    &-summary &-icon {
-      margin-left: 10px;
-      padding: 0;
-    }
-    &-summary &-img {
-      max-width: 400px;
-      flex: 0 1 400px;
-      margin: -12px -12px -12px 10px;
-      order: 1;
-    }
-    &-blog {
-      padding: 12px;
-    }
-    &-gallery {
-      display: flex;
-      justify-content: center;
-      &-link {
-        flex: 1 1 100px;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        &:hover, &:focus {
-          min-width: 300px;
-        }
-      }
-      &-thumb {
-        display: block;
-        flex: 0 0 auto;
-      }
-    }
+  .homepage-list, .list-article {
+    text-align: left;
   }
 }

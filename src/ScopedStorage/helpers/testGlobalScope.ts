@@ -1,4 +1,4 @@
-export const testGlobalScope = (globalScope?: any): Window => {
+export const testGlobalScope = (globalScope?: Window): Window => {
   if (!globalScope) {
     try {
       globalScope = window;

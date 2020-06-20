@@ -6,13 +6,13 @@ export class FallbackStorage<T> implements ScopedStorage<T> {
     private readonly _key: string,
     private readonly _storage: Map<string, any>
   ) {}
-  get() {
+  get(): T | undefined {
     return this._storage.get(this._key) as T | undefined;
   }
-  set(value: T) {
+  set(value: T): void {
     this._storage.set(this._key, value);
   }
-  remove() {
+  remove(): void {
     this._storage.delete(this._key);
   }
 }

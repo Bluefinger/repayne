@@ -1,13 +1,13 @@
 import type { BrowserStorage } from "../StorageTypes";
 import { WrappedStorage } from "../storages/WrappedStorage";
 
-const tested: { [key: string]: boolean } = Object.create(null);
+const tested = Object.create(null) as Record<string, boolean>;
 
 export const testStorage = <T>(
   type: BrowserStorage,
   key: string,
   scope: Window
-) => {
+): WrappedStorage<T> | undefined => {
   const storage = scope[type];
   if (!(type in tested)) {
     try {

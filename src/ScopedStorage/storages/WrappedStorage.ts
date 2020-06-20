@@ -7,7 +7,7 @@ export class WrappedStorage<T> implements ScopedStorage<T> {
     private readonly _key: string,
     private readonly _storage: Storage
   ) {}
-  get() {
+  get(): T | undefined {
     try {
       const result = this._storage.getItem(this._key);
       if (result != null) {
@@ -16,12 +16,12 @@ export class WrappedStorage<T> implements ScopedStorage<T> {
     } catch (e) {}
     return undefined;
   }
-  set(value: T) {
+  set(value: T): void {
     try {
       this._storage.setItem(this._key, JSON.stringify(value));
     } catch (e) {}
   }
-  remove() {
+  remove(): void {
     try {
       this._storage.removeItem(this._key);
     } catch (e) {}

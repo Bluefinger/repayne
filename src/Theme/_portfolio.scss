@@ -13,6 +13,9 @@
     @include desktopView {
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
+    @include largeView {
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    }
   }
   &-item {
     transition: 0.2s flex ease, 0.2s transform ease, 0.2s opacity ease;
@@ -23,6 +26,9 @@
     opacity: 1;
     margin: 0;
     max-width: 280px;
+    @include largeView {
+      max-width: 300px;
+    }
     .post-icon {
       position: relative;
       padding-bottom: calc(20px + 100%);
@@ -99,6 +105,9 @@
       .title {
         margin: toRem(20px 10px);
       }
+    }
+    @include largeView {
+      max-width: toRem(1870px);
     }
   }
 }

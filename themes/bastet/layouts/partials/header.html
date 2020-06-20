@@ -1,14 +1,10 @@
-<header class="sidebar layout-header">
+<header class="sidebar layout-header" aria-label="Header">
 <div class="sidebar-content">
-  <div class="sidebar-about">{{ if .Site.Params.image }}
-    <img alt="{{ .Site.Params.author }}" src="/{{ .Site.Params.image }}" class="sidebar-logo" />{{ end }}
+  <div class="sidebar-about">
+    <svg class="icon logo sidebar-logo" aria-labelledby="logo-icon" role="img" version="1.1" viewBox="0 0 356 406" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title id="logo-icon">Code Payne</title><defs><linearGradient id="b" x1=".347" x2="226" y1="401" y2="132" gradientUnits="userSpaceOnUse"><stop stop-color="#133d49" offset="0"/><stop stop-color="#94fbff" offset="1"/></linearGradient></defs><g transform="translate(-21.9 2.34)"><g transform="translate(24)"><g stroke="url(#b)" stroke-linejoin="round" stroke-width="8"><path id="Path" d="m200 0.659-100 100 50 50 50-50 50 50-150 150 0.1 98.4 74.9-73.4 175-175z" fill="#5694a7"/><path id="Unnamed" d="m101 100-99.8 100 200 200 100-100-50-50-50 50-100-100 50-50zm50 50-50-50" fill="#212528"/></g></g></g></svg>
     <h1 class="sidebar-title">
       <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
     </h1>
-  </div>
-  <div class="title-bar">
-    <button class="menu-icon fa fa-bars fa-lg" type="button" ></button>
-    <div class="title-bar-title">Menu</div>
   </div>
   <nav class="menu-section" id="main-menu" aria-label="Main Menu">
     <ul class="menu">{{ $currentPage := . }}{{ range .Site.Menus.main }}
@@ -20,18 +16,18 @@
       </li>{{ end }}
     </ul>
   </nav>
-  <aside class="menu-section social-links" aria-label="Social Media Menu">
+  <nav class="menu-section social-links" aria-label="Social Media Menu">
     <ul class="menu menu-social">{{ range.Site.Data.social.websites }}
       <li>
         <a rel="noopener" target="_blank" href="{{.url}}" title="{{.name}}">
-          <svg class="icon small" aria-labelledby="icon-{{.icon}}" role="img">
-            <title id="icon-{{.icon}}">{{.name}}</title>
+          <svg class="icon small" aria-labelledby="menu-icon-{{.icon}}" role="img">
+            <title id="menu-icon-{{.icon}}">{{.name}}</title>
             <use xlink:href="js/sprites.svg#{{.icon}}"></use>
           </svg>
         </a>
       </li>{{ end }}
     </ul>
-  </aside>
-  <div id="swatch-app" class="app"></div>
+  </nav>
+  <!--<div id="swatch-app" class="app"></div>-->
 </div>
 </header>

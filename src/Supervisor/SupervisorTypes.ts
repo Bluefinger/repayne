@@ -2,7 +2,9 @@ import type { ObjectPatch } from "mergerino";
 import type { Stream } from "rythe";
 import type { TemplateResult } from "lit-html";
 
-export type PatchFn<State extends object> = (state: State) => State;
+export type PatchFn<State extends Record<string, unknown>> = (
+  state: State
+) => State;
 
 export interface AppState {
   [id: string]: any;
@@ -12,7 +14,10 @@ export type ComponentActions = {
   [action: string]: (...args: any[]) => void;
 };
 
-export interface NextContext<State extends object, Actions extends object> {
+export interface NextContext<
+  State extends Record<string, any>,
+  Actions extends ComponentActions
+> {
   state: State;
   patch: ObjectPatch<State>[] | null;
   actions: Actions;
@@ -22,18 +27,34 @@ export interface NextContext<State extends object, Actions extends object> {
   ) => void;
 }
 
-export type NextFn<State extends object, Actions extends object> = (
-  context: NextContext<State, Actions>
-) => Promise<void>;
+export type NextFn<
+  State extends Record<string, any>,
+  Actions extends ComponentActions
+> = (context: NextContext<State, Actions>) => void | Promise<void>;
 
-export interface Context<State extends object, Actions extends object> {
+export interface Context<
+  State extends Record<string, any>,
+  Actions extends ComponentActions
+> {
   prevState: State;
   state: State;
   patch: ObjectPatch<State>[] | null;
   next: NextFn<State, Actions>[];
 }
 
-export type ServiceFn<State extends object, Actions extends object> = (
+export type ServiceResult<
+  State extends Record<string, any>,
+  Actions extends ComponentActions
+> = {
+  state?: ObjectPatch<State>;
+  next?: NextFn<State, Actions>;
+  reset?: boolean | NextFn<State, Actions>;
+};
+
+export type ServiceFn<
+  State extends Record<string, any>,
+  Actions extends ComponentActions
+> = (
   params: Context<State, Actions>
 ) => {
   state?: ObjectPatch<State>;
@@ -42,8 +63,8 @@ export type ServiceFn<State extends object, Actions extends object> = (
 };
 
 export interface Component<
-  State extends object = object,
-  Actions extends object = object
+  State extends Record<string, unknown>,
+  Actions extends ComponentActions
 > {
   id: string;
   initial?: PatchFn<State>;
@@ -51,12 +72,14 @@ export interface Component<
   service?: ServiceFn<State, Actions>;
 }
 
-export interface Service<State extends object, Actions extends object>
-  extends Component<State, Actions> {
+export interface Service<
+  State extends Record<string, any>,
+  Actions extends ComponentActions
+> extends Component<State, Actions> {
   service: ServiceFn<State, Actions>;
 }
 
-export interface App<State extends object> {
+export interface App<State extends Record<string, any>> {
   context: Context<State, ComponentActions>;
   actions: ComponentActions;
   services: ServiceFn<State, ComponentActions>[];
@@ -66,7 +89,10 @@ export interface App<State extends object> {
   ) => void;
 }
 
-export type ViewFn<State extends object, Actions extends object> = (
+export type ViewFn<
+  State extends Record<string, any>,
+  Actions extends ComponentActions
+> = (
   state: State,
   actions: Actions extends infer T
     ? T extends ComponentActions

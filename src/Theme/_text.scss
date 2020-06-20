@@ -2,13 +2,15 @@
 
 body {
   margin: 0;
-  font-family: Fira Sans;
+  font-family: "Fira Sans", sans-serif;
   font-weight: 300;
+  text-rendering: optimizeLegibility;
 }
 
 button, input, select, optgroup, textarea {
-  font-family: Fira Sans;
+  font-family: "Fira Sans", sans-serif;
   font-weight: 300;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -43,4 +45,8 @@ h1, .post-title {
 .title {
   display: inline-block;
   font-variant: small-caps;
+}
+
+html {
+  touch-action: manipulation;
 }

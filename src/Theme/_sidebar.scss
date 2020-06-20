@@ -6,6 +6,7 @@
     justify-content: space-evenly;
     flex-basis: 100%;
     margin-bottom: toRem(5px);
+    text-align: center;
   }
   &-logo {
     max-width: toRem(80px);
@@ -16,7 +17,6 @@
   &-content {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: toRem(10px);
   }
   .menu {
     margin: 0;

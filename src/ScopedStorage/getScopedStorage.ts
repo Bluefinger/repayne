@@ -8,7 +8,7 @@ let fallback: Map<string, any> | undefined;
 export const getScopedStorage = <T extends any>(
   type: StorageType,
   key: string,
-  globalScope?: any
+  globalScope?: Window
 ): ScopedStorage<T> => {
   const scope = testGlobalScope(globalScope);
   let storage: ScopedStorage<T> | undefined;

@@ -4,13 +4,12 @@ import { render } from "lit-html";
 import { patchContext, prepareRender } from "./SupervisorFns";
 import type {
   App,
-  AppState,
   Component,
   ComponentActions,
   ViewFn,
 } from "./SupervisorTypes";
 
-export class Supervisor<State extends AppState = AppState> {
+export class Supervisor<State extends Record<string, any>> {
   private _app: App<State>;
   private _render: Stream<App<State>>;
   public constructor(initialState: State = {} as State) {
@@ -33,9 +32,9 @@ export class Supervisor<State extends AppState = AppState> {
       throttle
     );
   }
-  public register<Components extends Component<any, any>[]>(
+  public register<Components extends Component<State, any>[]>(
     ...components: Components
-  ) {
+  ): void {
     const { actions, context, services, update } = this._app;
     context.state = merge(
       context.state,
@@ -54,7 +53,7 @@ export class Supervisor<State extends AppState = AppState> {
   public render(
     subscriberFn: ViewFn<State, ComponentActions>,
     container: Element
-  ) {
+  ): void {
     this._render.pipe(
       map(({ context, actions }) =>
         render(subscriberFn(context.state, actions), container)

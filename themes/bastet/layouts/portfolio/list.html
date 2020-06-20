@@ -1,21 +1,21 @@
 {{ define "main" }}
-<article class="section-portfolio portfolio-article">
-  <h2 class="title">{{ .Title }}</h2>
+<article aria-labelledby="page-title" class="section-portfolio portfolio-article">
+  <h2 id="page-title" class="title">{{ .Title }}</h2>
   <div id="filter-bar" class="app"></div>
-  <div class="post-list filterable-list">{{ range $index, $element := .Paginator.Pages }}
-    <article class="post post-summary filterable-item {{ range .Params.tags }} type-{{ . }}{{ end }}">{{ if .Params.Icon }}
+  <div class="post-list filterable-list">{{ range $index, $element := .Pages }}
+    <article aria-labelledby="post-title-{{.File.UniqueID}}" class="post post-summary filterable-item {{ range .Params.tags }} type-{{ . }}{{ end }}">{{ if .Params.Icon }}
       <div class="post-icon">
-        <a href="{{ .Permalink }}"><svg class="icon medium" aria-labelledby="icon-{{.File.UniqueID}}" role="img">
+        <a href="{{ .Permalink }}" title="{{.Title}}"><svg class="icon medium" aria-labelledby="icon-{{.File.UniqueID}}" role="img">
           <title id="icon-{{.File.UniqueID}}">{{.Title}}</title>
           <use xlink:href="js/sprites.svg#{{.Params.Icon}}"></use>
         </svg></a>
       </div>{{ else }}{{with .Resources.GetMatch "**-header.*"}}{{ $image := .Fill "300x300 Lanczos" }}
       <div class="post-img">
         <a href="{{ $element.Permalink }}">
-          <img class="img-fluid" src="{{ $image.Permalink }}" alt="{{ .Title }}">
+          <img class="img-fluid lazyload" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAQAAADTdEb+AAAAxUlEQVR42u3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHwawGoAAS0YDHwAAAAASUVORK5CYII" data-src="{{ $image.Permalink }}" alt="{{ .Title }}">
         </a>
       </div>{{end}}{{end}}
-      <h3 class="post-title post-list-item-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+      <h3 id="post-title-{{.File.UniqueID}}" class="post-title post-list-item-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
       <div class="post-meta">
         <time class="post-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">{{ .PublishDate.Format "2006" }}</time>
         <ul class="tags">{{ range .Params.tags }}
@@ -24,6 +24,5 @@
       </div>
     </article>{{ end }}
   </div>
-  {{ partial "pagination.html" $ }}
 </article>
 {{ end }}

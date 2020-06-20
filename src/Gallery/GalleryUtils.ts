@@ -3,15 +3,17 @@ import type {
   GalleryState,
   GalleryActions,
 } from "./GalleryTypes";
-import { merge, fromDOMEvent, filter, map } from "rythe";
-import type { NextContext } from "../Supervisor";
+import { merge, fromDOMEvent, filter, map, Stream } from "rythe";
+import type { NextContext, ServiceResult } from "../Supervisor";
 
 const galleryControlKeys = /^(Tab|Arrow(?:Left|Right)|Escape)$/;
 const galleryControlFilter = (ev: KeyboardEvent) =>
   galleryControlKeys.test(ev.key);
 const enterKey = (event: KeyboardEvent) => event.key === "Enter";
 
-export const galleryInit = (id: string) => {
+export const galleryInit = (
+  id: string
+): ServiceResult<GalleryState, GalleryActions> => {
   const elements = document.querySelectorAll(`a[data-${id}]`);
   const slides: GallerySlide[] = [];
   elements.forEach((element) => {
@@ -53,7 +55,9 @@ export const galleryInit = (id: string) => {
   };
 };
 
-export const makeCaptureStream = (actions: GalleryActions) => {
+export const makeCaptureStream = (
+  actions: GalleryActions
+): Stream<KeyboardEvent> => {
   const capture = fromDOMEvent<KeyboardEvent>(document, "keydown");
   capture.pipe(
     filter(galleryControlFilter),

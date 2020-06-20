@@ -1,0 +1,109 @@
+.post {
+  padding: toRem(10px);
+  &-icon {
+    float: right;
+    margin: toRem(10px 0 0 10px);
+    .icon {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  &-full {
+    margin: toRem(10px);
+    padding: toRem(12px);
+  }
+  &-title {
+    margin: toRem(8px 0);
+    letter-spacing: -0.015em;
+  }
+  &-summary {
+    margin: 10px 0;
+  }
+  &-img {
+    margin: 0;
+  }
+  &-list &-summary &-img {
+    margin: toRem(-10px -10px 0);
+  }
+  &-gallery {
+    text-align: center;
+  }
+  .tags {
+    list-style: none;
+    padding: 0;
+    display: inline;
+    margin: toRem(0 0 0 10px);
+  }
+  .tag {
+    display: inline-block;
+    margin-right: 5px;
+    &::before {
+      content: "#";
+    }
+  }
+  @include desktopView {
+    &-full {
+      margin: toRem(20px);
+      padding: toRem(20px);
+      max-width: toRem(1200px);
+      width: calc(100vw - 140px);
+    }
+    &-icon {
+      float: none;
+      margin: 0;
+      position: relative;
+      padding-bottom: 100%;
+      flex: 0 1 200px;
+      align-self: stretch;
+      order: 1;
+      .icon {
+        width: 200px;
+        height: 200px;
+      }
+    }
+    &-content {
+      flex: 1 1 400px;
+    }
+    &-portfolio,
+    &-blog {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &-summary &-icon {
+      margin-left: 10px;
+      padding: 0;
+    }
+    &-summary &-img {
+      max-width: 400px;
+      flex: 0 1 400px;
+      margin: -12px -12px -12px 10px;
+      order: 1;
+    }
+    &-blog {
+      padding: 12px;
+    }
+    &-gallery {
+      display: flex;
+      justify-content: center;
+      text-align: left;
+      &-link {
+        flex: 1 1 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        &:hover,
+        &:focus {
+          min-width: 300px;
+        }
+      }
+      &-thumb {
+        display: block;
+        flex: 0 0 auto;
+      }
+    }
+    .tags {
+      display: inline-block;
+    }
+  }
+}

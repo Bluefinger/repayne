@@ -1,8 +1,8 @@
 {{ define "main" }}
 
-<article class="post post-full">
+<article class="post post-full" aria-labelledby="post-title-{{.File.UniqueID}}">
 <header class="post-header">
-  <h2 class="post-title">{{ .Title }}</h2>
+  <h2 id="post-title-{{.File.UniqueID}}" class="post-title">{{ .Title }}</h2>
   <div class="post-meta">
     <time class="post-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">
       {{ .PublishDate.Format "Jan 2, 2006" }}
@@ -17,7 +17,7 @@
 {{ .Content }}
 </div>{{- with .Resources.ByType "image" -}}
 <div class="post-gallery">{{ range . -}}{{ $thumb := .Fill "300x300 Lanczos" }}
-  <a class="post-gallery-link" href="{{ .Permalink }}" data-gallery data-gallery-description="{{ .Title }}"><img class="post-gallery-thumb" src="{{ $thumb.Permalink }}" alt="{{ .Title }}" ></a>{{- end -}}
+  <a class="post-gallery-link" href="{{ .Permalink }}" data-gallery data-gallery-description="{{ .Title }}"><img class="post-gallery-thumb lazyload" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAQAAADTdEb+AAAAxUlEQVR42u3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHwawGoAAS0YDHwAAAAASUVORK5CYII" data-src="{{ $thumb.Permalink }}" alt="{{ .Title }}" ></a>{{- end -}}
 </div>
 <div id="gallery-div" class="app"></div>{{- end -}}
 </article>

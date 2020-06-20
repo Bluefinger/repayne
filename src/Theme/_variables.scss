@@ -7,3 +7,4 @@ $dark-blue: rgb(23, 45, 79);
 $darker-blue: rgb(33, 37, 40);
 $medium-blue: mix($light-blue, $dark-blue);
 $darkened-blue: darken($medium-blue, 30%);
+$selected-blue: darken($medium-blue, 10%);

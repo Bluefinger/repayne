@@ -25,13 +25,15 @@
   transition-timing-function: ease;
   margin: toRem(2px);
   font-size: toRem(14px);
-  &:hover,
+  &:hover {
+    background-color: darken($selected-blue, 10%);
+  }
   &:focus {
-    background-color: darken($medium-blue, 20%);
+    background-color: darken($selected-blue, 15%);
     outline: none;
   }
   &.active {
-    background-color: $medium-blue;
+    background-color: $selected-blue;
     color: #fff;
   }
   &:disabled {

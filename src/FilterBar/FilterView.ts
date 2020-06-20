@@ -3,15 +3,15 @@ import { FilterState, FilterActions } from "./FilterTypes";
 import { ViewFn } from "../Supervisor";
 import { classMap } from "lit-html/directives/class-map";
 
-const listeners: {
-  [key: string]: (ev: any) => void;
-} = Object.create(null);
+const listeners = Object.create(null) as Record<
+  string,
+  (ev: MouseEvent) => void
+>;
 
 const getClickHandler = (
   type: string,
   action: (ev: MouseEvent, type: string) => void
-) =>
-  listeners[type] || (listeners[type] = (ev: MouseEvent) => action(ev, type));
+) => listeners[type] || (listeners[type] = (ev) => action(ev, type));
 
 const filterButton = (
   actions: FilterActions,

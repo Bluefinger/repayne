@@ -1,15 +1,15 @@
 import type { ViewFn } from "../Supervisor";
-import { html } from "lit-html";
+import { html, TemplateResult } from "lit-html";
 import { classMap } from "lit-html/directives/class-map";
 import { SwatchState, SwatchActions } from "./SwatchTypes";
 import "./swatch.scss";
-//import { injectCss } from "../utils/styleInject";
-
-//injectCss(styles);
 
 export const SwatchView = (
   id = "swatch"
-): ViewFn<SwatchState, SwatchActions> => (state, actions) => {
+): ViewFn<SwatchState, SwatchActions> => (
+  state: SwatchState,
+  actions: SwatchActions
+): TemplateResult => {
   const swatch = state[id];
   return html`<div class="swatch-picker">
     ${swatch.themes.map(

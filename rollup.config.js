@@ -9,14 +9,14 @@ import svgSprite from "rollup-plugin-svg-sprite";
 import progress from "rollup-plugin-progress";
 
 const extractable = /^(entry)\.css$/;
-const dynamicModules = /(mergerino|rythe|Supervisor|Gallery|Swatch|Filter|ScopedStorage)/;
+const dynamicModules = /(Supervisor|Gallery|Swatch|Filter|ScopedStorage)/;
 const dynamicStyling = /(chroma|spinny)/;
 
 export default {
   input: ["./src/entry.ts"],
   preserveEntrySignatures: "allow-extension",
   manualChunks(id) {
-    if (id.includes("lit-html")) {
+    if (id.includes("node_modules")) {
       return "vendor";
     }
     if (dynamicModules.test(id)) {
@@ -44,10 +44,13 @@ export default {
       extensions: [".scss", ".css"],
       plugins: [autoprefixer],
       minimize: false,
-      onExtract: ({ name }) => extractable.test(name),
+      onExtract: ({ name }) => {
+        console.log("style", name);
+        return extractable.test(name);
+      },
       sass: {
         impl: "sass",
-        fibers: true,
+        // fibers: true,
         outputStyle: "compressed",
       },
     }),
@@ -56,28 +59,30 @@ export default {
       outputFolder: "static/js",
     }),
   ],
-  output: {
-    dir: "./static/js/",
-    format: "esm",
-    sourcemap: true,
-    chunkFileNames: "[name]-[format].js",
-    assetFileNames: "[name]-[ext][extname]",
-    plugins: [
-      terser({
-        mangle: {
-          properties: {
-            regex: /^(_|\$\$)/,
+  output: [
+    {
+      dir: "./static/js/",
+      format: "esm",
+      sourcemap: true,
+      chunkFileNames: "[name]-[format].js",
+      assetFileNames: "assets/[name]-[ext][extname]",
+      plugins: [
+        terser({
+          mangle: {
+            properties: {
+              regex: /^(_|\$\$)/,
+            },
           },
-        },
-        nameCache: {},
-        compress: {
-          passes: 3,
-        },
-        output: {
-          ecma: 8,
-        },
-        module: true,
-      }),
-    ],
-  },
+          nameCache: {},
+          compress: {
+            passes: 3,
+          },
+          output: {
+            ecma: 8,
+          },
+          module: true,
+        }),
+      ],
+    },
+  ],
 };

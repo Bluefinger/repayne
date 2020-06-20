@@ -1,8 +1,8 @@
-import { SKIP } from "rythe";
+import { emitSKIP } from "rythe";
 import merge, { ObjectPatch } from "mergerino";
 import type { App } from "./SupervisorTypes";
 
-export const patchContext = <State extends object>(
+export const patchContext = <State extends Record<string, any>>(
   app: App<State>,
   patch: ObjectPatch<State>
 ): App<State> => {
@@ -20,7 +20,7 @@ export const patchContext = <State extends object>(
         context.next[0] = reset;
         break;
       } else {
-        return SKIP;
+        return emitSKIP();
       }
     }
     if (state) context.state = merge(context.state, state);
@@ -29,7 +29,7 @@ export const patchContext = <State extends object>(
   return app;
 };
 
-export const prepareRender = <State extends object>(
+export const prepareRender = <State extends Record<string, any>>(
   app: App<State>
 ): App<State> => {
   const { context, actions, update, register } = app;
@@ -43,9 +43,9 @@ export const prepareRender = <State extends object>(
       register,
     });
     for (const nextFn of next) {
-      params.then(nextFn);
+      void params.then(nextFn);
     }
     next.length = 0;
   }
-  return patch ? app : SKIP;
+  return patch ? app : emitSKIP();
 };
