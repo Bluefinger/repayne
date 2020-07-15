@@ -2,7 +2,6 @@ import { html, TemplateResult } from "lit-html";
 import type { ViewFn } from "../Supervisor";
 import type { GalleryState, GalleryActions } from "./GalleryTypes";
 import { classMap } from "lit-html/directives/class-map";
-// import { cache } from "lit-html/directives/cache.js";
 import { live } from "lit-html/directives/live.js";
 
 const loadedImages = new Set<string>();

@@ -1,23 +1,36 @@
-export const lazyHandler = (classname: string, lazyImages: Element[]): void => {
-  const loadingOptions: AddEventListenerOptions = { once: true, passive: true };
-  const entryIntersect = (entry: IntersectionObserverEntry): void => {
+type LazyCallback<T extends Element> = (
+  element: T,
+  eventOptions: Readonly<AddEventListenerOptions>
+) => void;
+
+export type LazyHandler<T extends Element> = (
+  lazyElements: Iterable<T>,
+  lazyCallback: LazyCallback<T>
+) => void;
+
+const loadingOptions: Readonly<AddEventListenerOptions> = Object.freeze({
+  once: true,
+  passive: true,
+});
+
+export const lazyHandler = <T extends Element>(
+  lazyElements: Iterable<T>,
+  lazyCallback: LazyCallback<T>
+): void => {
+  const entryIntersect = function (
+    this: IntersectionObserver,
+    entry: IntersectionObserverEntry
+  ): void {
     if (entry.isIntersecting) {
-      const lazyImage = entry.target as HTMLImageElement;
-      if (lazyImage.dataset.src) {
-        lazyImage.src = lazyImage.dataset.src;
-        lazyImage.addEventListener(
-          "load",
-          () => lazyImage.classList.remove(classname),
-          loadingOptions
-        );
-      }
-      if (lazyImage.dataset.srcset) lazyImage.srcset = lazyImage.dataset.srcset;
-      lazyImageObserver.unobserve(lazyImage);
+      const lazyElement = entry.target as T;
+      lazyCallback(lazyElement, loadingOptions);
+      this.unobserve(lazyElement);
     }
   };
-
-  const lazyImageObserver = lazyImages.reduce((observer, image) => {
-    observer.observe(image);
-    return observer;
-  }, new IntersectionObserver((entries) => entries.forEach(entryIntersect)));
+  const observer = new IntersectionObserver((entries, observer) =>
+    entries.forEach(entryIntersect, observer)
+  );
+  for (const element of lazyElements) {
+    observer.observe(element);
+  }
 };

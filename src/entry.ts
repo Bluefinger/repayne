@@ -11,24 +11,13 @@ import "./icons/css3.svg";
 import { lazyHandler } from "./LazyLoader";
 import { importCss, injectCss } from "./utils/styleInject";
 
-const findClass = (classname: string) =>
-  document.getElementsByClassName(classname);
+const findClass = <T extends Element>(classname: string) =>
+  document.getElementsByClassName(classname) as HTMLCollectionOf<T>;
 
 const dynContent = findClass("app");
 
 if (dynContent.length) {
   const app = import("./Supervisor").then(({ Supervisor }) => new Supervisor());
-
-  // const swatchApp = dynContent.namedItem("swatch-app");
-  // if (swatchApp) {
-  //   const swatch = import("./Swatch");
-  //   void app.then((container) =>
-  //     swatch.then(({ SwatchComponent, SwatchView }) => {
-  //       container.register(SwatchComponent());
-  //       container.render(SwatchView(), swatchApp);
-  //     })
-  //   );
-  // }
 
   const galleryApp = dynContent.namedItem("gallery-div");
   if (galleryApp) {
@@ -57,13 +46,29 @@ if (dynContent.length) {
 }
 
 const LAZY_CLASS = "lazyload";
-const lazyImages = [...findClass(LAZY_CLASS)];
+const lazyImages = findClass<HTMLImageElement>(LAZY_CLASS);
 if (lazyImages.length) {
-  lazyHandler(LAZY_CLASS, lazyImages);
+  lazyHandler(lazyImages, (element, options) => {
+    const lazyImage = element;
+    if (lazyImage.dataset.src) {
+      lazyImage.src = lazyImage.dataset.src;
+      lazyImage.addEventListener(
+        "load",
+        () => lazyImage.classList.remove(LAZY_CLASS),
+        options
+      );
+    }
+    if (lazyImage.dataset.srcset) lazyImage.srcset = lazyImage.dataset.srcset;
+  });
 }
 
-if (findClass("highlight").length) {
-  void import("./chroma.scss").then(importCss);
+const syntax = document.querySelectorAll<HTMLElement>("pre > code");
+if (syntax.length) {
+  const highlight = import("./Syntax");
+  void import("highlight.js/styles/vs2015.css").then(importCss);
+  void highlight.then(({ initHighlighting }) => {
+    initHighlighting(syntax, lazyHandler);
+  });
 }
 
 if (findClass("spinny-container").length) {

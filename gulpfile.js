@@ -23,7 +23,7 @@ console.log(`Start up took ${finish - start}ms`);
 
 const extractable = /^(entry)\.css$/;
 const dynamicModules = /(Supervisor|Gallery|Swatch|Filter|ScopedStorage)/;
-const dynamicStyling = /(chroma|spinny)/;
+const dynamicStyling = /(chroma|spinny|highlight\.js\/styles)/;
 
 let cached;
 
@@ -38,11 +38,18 @@ const inputOptions = () => ({
   input: ["./src/entry.ts"],
   preserveEntrySignatures: "allow-extension",
   manualChunks(id) {
-    if (id.includes("node_modules") || dynamicModules.test(id)) {
-      return "dynamic";
-    }
-    if (dynamicStyling.test(id)) {
-      return "extra-styles";
+    if (id) {
+      if (id.includes("highlight.js/lib/languages")) {
+        return id.split("/").pop().slice(0, -3);
+      }
+      if (id.includes("highlight.js/lib") || id.includes("Syntax"))
+        return "syntax";
+      if (dynamicStyling.test(id)) {
+        return "extra-styles";
+      }
+      if (id.includes("node_modules") || dynamicModules.test(id)) {
+        return "dynamic";
+      }
     }
   },
   plugins: [
@@ -137,7 +144,7 @@ const saveCache = (cache) =>
 
 const bundle = async () => {
   const opts = inputOptions();
-  opts.cache = cached;
+  //opts.cache = cached;
   const bundle = await rollup(opts);
   await Promise.all([
     ...outputOptions().map(bundle.write),
@@ -153,7 +160,7 @@ const generate = (args) => {
 
 const serveFiles = () => {
   const watchOpts = watchOptions();
-  watchOpts.cache = cached;
+  //watchOpts.cache = cached;
   const bundle = rollupWatch(watchOpts);
   const startSync = (event) => {
     if (event.code === "END") {
@@ -163,6 +170,7 @@ const serveFiles = () => {
         open: false,
       });
       bundle.off("event", startSync);
+      browserSync.watch("public/**/*", browserSync.reload);
     }
   };
   bundle.on("event", startSync);
@@ -174,10 +182,9 @@ const serveFiles = () => {
     }
   });
   watch(
-    ["static/**/*", "themes/**/*", "content/**/*"],
+    ["static/**/*", "themes/**/*", "content/**/*", "config.toml"],
     generate(`-b http://${getLocalExternalIP()}:3000/`)
   );
-  browserSync.watch("public/**/*", browserSync.reload);
 };
 
 exports.build = series(parallel(loadCache, cleanup), bundle, generate());

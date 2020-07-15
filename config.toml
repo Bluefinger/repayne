@@ -4,8 +4,8 @@ title = "Code Payne"
 theme = "bastet"
 pluralizeListTitles = false
 paginate = 10
-pygmentsCodeFences = true
-pygmentsUseClasses = true
+pygmentsCodeFences = false
+pygmentsUseClasses = false
 disableKinds = ["taxonomy", "taxonomyTerm"]
 
 [params]

@@ -4,14 +4,15 @@
     "checkJs": false,
     "sourceMap": true,
     "strict": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es2019",
     "removeComments": true,
     "rootDir": "./",
-    "keyofStringsOnly": true
+    "keyofStringsOnly": true,
+    "types": ["highlight.js"]
   },
   "include": ["./src/**/*"],
   "exclude": ["./node_modules/**/*", "./static/**/*"]

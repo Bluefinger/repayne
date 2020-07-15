@@ -19,8 +19,8 @@ const filterButton = (
   active: boolean,
   disable?: boolean,
   label?: string
-) => {
-  return html`<button
+) =>
+  html`<button
     class=${classMap({
       filter: true,
       active,
@@ -33,7 +33,6 @@ const filterButton = (
   >
     ${label || type}
   </button>`;
-};
 
 export const FilterView = (
   id = "filterbar"

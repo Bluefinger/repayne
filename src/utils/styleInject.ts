@@ -1,4 +1,7 @@
-export const injectCss = (css: string, style?: HTMLStyleElement) => {
+export const injectCss = (
+  css: string,
+  style?: HTMLStyleElement
+): HTMLStyleElement => {
   if (!css || typeof window === "undefined") {
     throw new Error("Can't inject");
   }
@@ -11,4 +14,7 @@ export const injectCss = (css: string, style?: HTMLStyleElement) => {
   return style;
 };
 
-export const importCss = ({ css }: typeof import("*.scss")) => injectCss(css);
+export const importCss = ({
+  css,
+}: typeof import("*.scss") | typeof import("*.css")): HTMLStyleElement =>
+  injectCss(css);
