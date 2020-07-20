@@ -1,6 +1,7 @@
 import type { Component } from "../Supervisor";
 import type { FilterState, FilterActions } from "./FilterTypes";
 import { alphabetical, toggleClick, applyFilter } from "./FilterFns";
+import { map, uniqueMap, filter, flatten } from "../utils/iterables";
 
 const empty = Object.freeze({});
 
@@ -10,17 +11,16 @@ export const FilterComponent = (
 ): Component<FilterState, FilterActions> => ({
   id,
   initial: () => {
-    const filters = new Set<string>();
-    filterable.forEach((item) => {
-      for (const cssClass of item.classList.values()) {
-        if (cssClass.startsWith("type-")) {
-          filters.add(cssClass.slice(5));
-        }
-      }
-    });
+    const collectFilters = uniqueMap(
+      filter(
+        flatten(map(filterable, (item) => item.classList.values())),
+        (item) => item.startsWith("type-")
+      ),
+      (n) => n.slice(5)
+    );
     return {
       [id]: {
-        filters: [...filters].sort(alphabetical),
+        filters: [...collectFilters].sort(alphabetical),
         selected: null,
         clicked: 0,
       },

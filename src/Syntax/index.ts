@@ -1,6 +1,6 @@
 import { registerLanguage, highlight } from "highlight.js/lib/core";
 import type { LazyHandler } from "../LazyLoader";
-import { map, unique } from "../utils/iterables";
+import { map, uniqueMap } from "../utils/iterables";
 
 const syntaxes: Record<string, () => Promise<void>> = {
   css: () =>
@@ -36,17 +36,22 @@ interface HighlightJob {
 }
 
 const langTest = /lang(?:uage)?-(\w+)/;
-const jobs = new WeakMap<HTMLElement, HighlightJob>();
+const jobs = new WeakMap<Element, HighlightJob>();
 
-const styleBlock = (block: HTMLElement, { lang, code }: HighlightJob): void => {
+const styleBlock = <T extends Element>(
+  block: T,
+  { lang, code }: HighlightJob
+): void => {
   block.innerHTML = highlight(lang, code).value;
   jobs.delete(block);
 };
 
-const importHighlighters = (elements: Iterable<HTMLElement>): Promise<void[]> =>
+const importHighlighters = <T extends Element>(
+  elements: Iterable<T>
+): Promise<void[]> =>
   Promise.all(
     map(
-      unique(elements, (block) => {
+      uniqueMap(elements, (block) => {
         const matchLang = langTest.exec(block.className);
         const lang = matchLang ? matchLang[1] : "nohighlight";
         jobs.set(block, {
@@ -59,9 +64,9 @@ const importHighlighters = (elements: Iterable<HTMLElement>): Promise<void[]> =>
     )
   );
 
-export const initHighlighting = (
-  elements: Iterable<HTMLElement>,
-  lazyLoader: LazyHandler<HTMLElement>
+export const initHighlighting = <T extends Element>(
+  elements: Iterable<T>,
+  lazyLoader: LazyHandler<T>
 ): void => {
   const loadedHighlights = importHighlighters(elements);
   lazyLoader(elements, (codeblock) => {

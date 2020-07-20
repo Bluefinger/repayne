@@ -34,20 +34,22 @@ const filterButton = (
     ${label || type}
   </button>`;
 
-export const FilterView = (
+export const FilterView = <
+  State extends FilterState,
+  Actions extends FilterActions
+>(
   id = "filterbar"
-): ViewFn<FilterState, FilterActions> => (state, actions) => {
-  const filterState = state[id];
-  const active = filterState.selected;
+): ViewFn<State, Actions> => (state, actions) => {
+  const { filters, selected } = state[id];
   return html`
     ${filterButton(
       actions,
       "none",
-      !active,
-      active == null,
+      !selected,
+      selected == null,
       "Show all"
-    )}${filterState.filters.map((filter) =>
-      filterButton(actions, filter, filter === active)
+    )}${filters.map((filter) =>
+      filterButton(actions, filter, filter === selected)
     )}
   `;
 };

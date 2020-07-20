@@ -16,7 +16,7 @@ export function reduce<T, U = T>(
   return acc;
 }
 
-export function* unique<T, U = T>(
+export function* uniqueMap<T, U = T>(
   iter: Iterable<T>,
   fn: (item: T) => U
 ): Generator<U> {
@@ -36,5 +36,19 @@ export function* filter<T>(
   for (const value of iter) {
     if (!fn(value)) continue;
     yield value;
+  }
+}
+
+const isGenerator = <T extends unknown>(
+  value: T | IterableIterator<T>
+): value is Generator<T> =>
+  (value as Generator<T>)[Symbol.iterator] !== undefined;
+
+export function* flatten<T>(
+  iter: Iterable<T | IterableIterator<T>>
+): Generator<T> {
+  for (const value of iter) {
+    if (isGenerator(value)) yield* value;
+    else yield value as T;
   }
 }

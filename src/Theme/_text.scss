@@ -13,6 +13,10 @@ button, input, select, optgroup, textarea {
   text-rendering: optimizeLegibility;
 }
 
+code, kbd, samp, pre {
+  font-family: Consolas, "Courier New", monospace;
+}
+
 a {
   &:focus {
     z-index: 1;

@@ -11,8 +11,8 @@
     "target": "es2019",
     "removeComments": true,
     "rootDir": "./",
-    "keyofStringsOnly": true,
-    "types": ["highlight.js"]
+    "keyofStringsOnly": false,
+    "types": ["highlight.js", "node"]
   },
   "include": ["./src/**/*"],
   "exclude": ["./node_modules/**/*", "./static/**/*"]

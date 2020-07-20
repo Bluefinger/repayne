@@ -10,14 +10,21 @@ import "./icons/rust.svg";
 import "./icons/css3.svg";
 import { lazyHandler } from "./LazyLoader";
 import { importCss, injectCss } from "./utils/styleInject";
+import type { GalleryState, GalleryActions } from "./Gallery";
+import type { FilterState, FilterActions } from "./FilterBar";
 
 const findClass = <T extends Element>(classname: string) =>
   document.getElementsByClassName(classname) as HTMLCollectionOf<T>;
 
 const dynContent = findClass("app");
 
+type AppState = GalleryState & FilterState;
+type AppActions = GalleryActions & FilterActions;
+
 if (dynContent.length) {
-  const app = import("./Supervisor").then(({ Supervisor }) => new Supervisor());
+  const app = import("./Supervisor").then(
+    ({ Supervisor }) => new Supervisor<AppState, AppActions>()
+  );
 
   const galleryApp = dynContent.namedItem("gallery-div");
   if (galleryApp) {

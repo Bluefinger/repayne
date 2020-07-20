@@ -2,39 +2,49 @@ import type { ObjectPatch } from "mergerino";
 import type { Stream } from "rythe";
 import type { TemplateResult } from "lit-html";
 
+type inferComponent<
+  Comp extends Component<any, any>,
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
+> = Comp extends Component<infer S, infer A>
+  ? Component<State extends S ? S : never, Actions extends A ? A : never>
+  : never;
+
+export type Register<
+  Components extends Component<any, any>[],
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
+> = {
+  [I in keyof Components]: Components[I] extends Component<any, any>
+    ? inferComponent<Components[I], State, Actions>
+    : never;
+};
+
 export type PatchFn<State extends Record<string, unknown>> = (
   state: State
 ) => State;
 
-export interface AppState {
-  [id: string]: any;
-}
-
-export type ComponentActions = {
-  [action: string]: (...args: any[]) => void;
-};
-
 export interface NextContext<
-  State extends Record<string, any>,
-  Actions extends ComponentActions
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
 > {
   state: State;
   patch: ObjectPatch<State>[] | null;
   actions: Actions;
   update: Stream<ObjectPatch<State>>;
-  register: <Components extends Component<any, any>[]>(
-    ...components: Components
+  register: <Components extends Component<State, Actions>[]>(
+    ...components: Components & Register<Components, State, Actions>
   ) => void;
 }
 
 export type NextFn<
-  State extends Record<string, any>,
-  Actions extends ComponentActions
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
 > = (context: NextContext<State, Actions>) => void | Promise<void>;
 
 export interface Context<
-  State extends Record<string, any>,
-  Actions extends ComponentActions
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
 > {
   prevState: State;
   state: State;
@@ -43,8 +53,8 @@ export interface Context<
 }
 
 export type ServiceResult<
-  State extends Record<string, any>,
-  Actions extends ComponentActions
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
 > = {
   state?: ObjectPatch<State>;
   next?: NextFn<State, Actions>;
@@ -52,8 +62,8 @@ export type ServiceResult<
 };
 
 export type ServiceFn<
-  State extends Record<string, any>,
-  Actions extends ComponentActions
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
 > = (
   params: Context<State, Actions>
 ) => {
@@ -64,7 +74,7 @@ export type ServiceFn<
 
 export interface Component<
   State extends Record<string, unknown>,
-  Actions extends ComponentActions
+  Actions extends Record<string, (...args: any[]) => void>
 > {
   id: string;
   initial?: PatchFn<State>;
@@ -73,30 +83,26 @@ export interface Component<
 }
 
 export interface Service<
-  State extends Record<string, any>,
-  Actions extends ComponentActions
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
 > extends Component<State, Actions> {
   service: ServiceFn<State, Actions>;
 }
 
-export interface App<State extends Record<string, any>> {
-  context: Context<State, ComponentActions>;
-  actions: ComponentActions;
-  services: ServiceFn<State, ComponentActions>[];
+export interface App<
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
+> {
+  context: Context<State, Actions>;
+  actions: Actions;
+  services: ServiceFn<State, Actions>[];
   update: Stream<ObjectPatch<State>>;
-  register: <Components extends Component<any, any>[]>(
-    ...components: Components
+  register: <Components extends Component<State, Actions>[]>(
+    ...components: Components & Register<Components, State, Actions>
   ) => void;
 }
 
 export type ViewFn<
-  State extends Record<string, any>,
-  Actions extends ComponentActions
-> = (
-  state: State,
-  actions: Actions extends infer T
-    ? T extends ComponentActions
-      ? T
-      : ComponentActions
-    : never
-) => TemplateResult;
+  State extends Record<string, unknown>,
+  Actions extends Record<string, (...args: any[]) => void>
+> = (state: State, actions: Actions) => TemplateResult;

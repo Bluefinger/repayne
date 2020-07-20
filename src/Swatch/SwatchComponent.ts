@@ -9,10 +9,10 @@ const themes: Themes = {
 
 const empty = Object.freeze({});
 
-const switchClasses = (next: string, prev?: string) => {
+const switchClasses = (next: string | number, prev?: string | number) => {
   const body = document.body;
-  if (prev) body.classList.remove(prev);
-  body.classList.add(next);
+  if (prev) body.classList.remove(prev as string);
+  body.classList.add(next as string);
 };
 
 const validateSelectedTheme = (
@@ -35,7 +35,7 @@ export const SwatchComponent = (
     id,
     initial: (): SwatchState => {
       const themeKeys = Object.keys(themes);
-      const preloaded = ["light", "dark"];
+      const preloaded: (keyof Themes)[] = ["light", "dark"];
       const key = validateSelectedTheme(themeKeys, store.get());
       if (preloaded.includes(key)) {
         switchClasses(key);

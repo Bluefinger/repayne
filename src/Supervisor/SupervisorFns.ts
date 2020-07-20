@@ -2,10 +2,13 @@ import { emitSKIP } from "rythe";
 import merge, { ObjectPatch } from "mergerino";
 import type { App } from "./SupervisorTypes";
 
-export const patchContext = <State extends Record<string, any>>(
-  app: App<State>,
+export const patchContext = <
+  State extends Record<string, any>,
+  Actions extends Record<string, (...args: any[]) => void>
+>(
+  app: App<State, Actions>,
   patch: ObjectPatch<State>
-): App<State> => {
+): App<State, Actions> => {
   const { context, services } = app;
   context.prevState = context.state;
   context.patch = [patch];
@@ -29,9 +32,12 @@ export const patchContext = <State extends Record<string, any>>(
   return app;
 };
 
-export const prepareRender = <State extends Record<string, any>>(
-  app: App<State>
-): App<State> => {
+export const prepareRender = <
+  State extends Record<string, any>,
+  Actions extends Record<string, (...args: any[]) => void>
+>(
+  app: App<State, Actions>
+): App<State, Actions> => {
   const { context, actions, update, register } = app;
   const { state, patch, next } = context;
   if (next.length) {

@@ -15,7 +15,8 @@ const loadingOptions: Readonly<AddEventListenerOptions> = Object.freeze({
 
 export const lazyHandler = <T extends Element>(
   lazyElements: Iterable<T>,
-  lazyCallback: LazyCallback<T>
+  lazyCallback: LazyCallback<T>,
+  lazyOptions?: IntersectionObserverInit
 ): void => {
   const entryIntersect = function (
     this: IntersectionObserver,
@@ -27,8 +28,9 @@ export const lazyHandler = <T extends Element>(
       this.unobserve(lazyElement);
     }
   };
-  const observer = new IntersectionObserver((entries, observer) =>
-    entries.forEach(entryIntersect, observer)
+  const observer = new IntersectionObserver(
+    (entries, observer) => entries.forEach(entryIntersect, observer),
+    lazyOptions
   );
   for (const element of lazyElements) {
     observer.observe(element);
