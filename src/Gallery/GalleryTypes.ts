@@ -2,9 +2,6 @@ export type GalleryState = {
   [gallery: string]: {
     slides: GallerySlide[];
     showing: number | null;
-    initialised: boolean;
-    loading: boolean;
-    loaded: number[];
   };
 };
 

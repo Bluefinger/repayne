@@ -1,16 +1,16 @@
 import { html } from "lit-html";
 import { FilterState, FilterActions } from "./FilterTypes";
-import { ViewFn } from "../Supervisor";
+import { ViewFn } from "../App";
 import { classMap } from "lit-html/directives/class-map";
 
 const listeners = Object.create(null) as Record<
   string,
-  (ev: MouseEvent) => void
+  <E extends Event>(ev: E) => void
 >;
 
 const getClickHandler = (
   type: string,
-  action: (ev: MouseEvent, type: string) => void
+  action: <E extends Event>(ev: E, type: string) => void
 ) => listeners[type] || (listeners[type] = (ev) => action(ev, type));
 
 const filterButton = (
@@ -40,16 +40,19 @@ export const FilterView = <
 >(
   id = "filterbar"
 ): ViewFn<State, Actions> => (state, actions) => {
-  const { filters, selected } = state[id];
-  return html`
-    ${filterButton(
-      actions,
-      "none",
-      !selected,
-      selected == null,
-      "Show all"
-    )}${filters.map((filter) =>
-      filterButton(actions, filter, filter === selected)
-    )}
-  `;
+  const filter = state[id];
+  if (filter) {
+    const { filters, selected } = filter;
+    return html`
+      ${filterButton(
+        actions,
+        "none",
+        !selected,
+        selected == null,
+        "Show all"
+      )}${filters.map((filter) =>
+        filterButton(actions, filter, filter === selected)
+      )}
+    `;
+  }
 };

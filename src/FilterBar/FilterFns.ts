@@ -1,5 +1,3 @@
-export const toggleClick = (value: 0 | 1): 0 | 1 => (value ? 0 : 1);
-
 export const alphabetical = (a: string, b: string): number =>
   a < b ? -1 : a > b ? 1 : 0;
 

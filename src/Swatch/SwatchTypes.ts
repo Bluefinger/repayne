@@ -3,15 +3,13 @@ export type Themes = {
 };
 
 export type SwatchState = {
-  [swatch: string]: {
+  swatch: {
     themes: (keyof Themes)[];
     selected: keyof Themes;
-    loading: boolean;
-    loaded: (keyof Themes)[];
+    loading: keyof Themes | null;
   };
 };
 
 export type SwatchActions = {
-  pickTheme: (theme: keyof Themes, force?: boolean) => void;
-  stopSwatchLoading: (key?: keyof Themes) => void;
+  pickTheme: (theme: keyof Themes) => void;
 };

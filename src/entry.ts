@@ -22,18 +22,18 @@ type AppState = GalleryState & FilterState;
 type AppActions = GalleryActions & FilterActions;
 
 if (dynContent.length) {
-  const app = import("./Supervisor").then(
-    ({ Supervisor }) => new Supervisor<AppState, AppActions>()
+  const app = import("./App").then(({ createAppContainer }) =>
+    createAppContainer<AppState, AppActions>()
   );
 
   const galleryApp = dynContent.namedItem("gallery-div");
   if (galleryApp) {
     const gallery = import("./Gallery");
-    void app.then((container) =>
+    void app.then(({ render, register }) =>
       gallery.then(({ GalleryComponent, GalleryView, GalleryCss }) => {
         injectCss(GalleryCss);
-        container.register(GalleryComponent());
-        container.render(GalleryView(), galleryApp);
+        register(GalleryComponent());
+        render(GalleryView(), galleryApp);
       })
     );
   }
@@ -42,11 +42,11 @@ if (dynContent.length) {
   if (filterApp) {
     const filter = import("./FilterBar");
     const filterable = document.querySelectorAll(".filterable-item");
-    void app.then((container) =>
+    void app.then(({ render, register }) =>
       filter.then(({ FilterComponent, FilterView, FilterCss }) => {
         injectCss(FilterCss);
-        container.register(FilterComponent(filterable));
-        container.render(FilterView(), filterApp);
+        register(FilterComponent(filterable));
+        render(FilterView(), filterApp);
       })
     );
   }

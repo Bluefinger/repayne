@@ -17,19 +17,19 @@
   <link rel="apple-touch-icon-precomposed" sizes="152x152" href="./img/apple-touch-icon-152-precomposed.png" />
   <link rel="apple-touch-icon-precomposed" sizes="180x180" href="./img/apple-touch-icon-180-precomposed.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="./img/favicon-192.png" />
-  <link rel="preload" href="js/assets/entry-css.css" as="style" />
+  <link rel="preload" href="js/assets/multi-entry.css" as="style" />
   <link rel="preload" href="js/assets/firasans-light-webfont-9d5a4234.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="js/assets/firasans-lightitalic-webfont-d17b6d43.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="js/assets/firasans-semibold-webfont-febb7c69.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="js/assets/firasans-semibolditalic-webfont-ca0806e6.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="modulepreload" href="js/entry.js" />
+  <link rel="modulepreload" href="js/multi-entry.js" />
   {{/*  <link rel="modulepreload" href="js/dynamic-es.js" />  */}}
   <!-- <link rel="modulepreload" href="js/vendor-es.js" /> -->
   {{ with .OutputFormats.Get "rss" -}}
   {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
   {{ end -}}
-  <link href='js/assets/entry-css.css' rel='stylesheet' type='text/css'>
-  <script type="module" src="js/entry.js"></script>
+  <link href='js/assets/multi-entry.css' rel='stylesheet' type='text/css'>
+  <script type="module" src="js/multi-entry.js"></script>
 {{ printf "<!--\n  Font Awesome Free 5.13.0 by @fontawesome - https://fontawesome.com \n  License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)\n-->" | safeHTML }}
 {{ printf "<!--\n  All product names, logos, and brands are property of their respective owners.\n  All company, product and service names used in this website are for identification purposes only.\n  Use of these names, logos, and brands does not imply endorsement.\n-->" | safeHTML }}
 </head>

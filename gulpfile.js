@@ -12,6 +12,8 @@ const ts = require("@wessberg/rollup-plugin-ts");
 const styles = require("rollup-plugin-styles");
 const svgSprite = require("rollup-plugin-svg-sprite");
 const { terser } = require("rollup-plugin-terser");
+const virtual = require("@rollup/plugin-virtual");
+const { promise: matched } = require("matched");
 const autoprefixer = require("autoprefixer");
 const del = require("del");
 const browserSync = require("browser-sync").create("dev");
@@ -21,8 +23,90 @@ const finish = Date.now();
 
 console.log(`Start up took ${finish - start}ms`);
 
-const extractable = /^(entry)\.css$/;
-const dynamicModules = /(Supervisor|Gallery|Swatch|Filter|ScopedStorage)/;
+const DEFAULT_OUTPUT = "multi-entry.js";
+const AS_IMPORT = "import";
+const AS_EXPORT = "export * from";
+
+const multiEntry = (conf = {}) => {
+  const config = {
+    include: [],
+    exclude: [],
+    entryFileName: DEFAULT_OUTPUT,
+    exports: true,
+    ...conf,
+  };
+
+  let prefix = config.exports === false ? AS_IMPORT : AS_EXPORT;
+  const exporter = (path) => `${prefix} ${JSON.stringify(path)}`;
+
+  const configure = (input) => {
+    if (typeof input === "string") {
+      config.include = [input];
+    } else if (Array.isArray(input)) {
+      config.include = input;
+    } else {
+      const {
+        include = [],
+        exclude = [],
+        entryFileName = DEFAULT_OUTPUT,
+        exports,
+      } = input;
+      config.include = include;
+      config.exclude = exclude;
+      config.entryFileName = entryFileName;
+      if (exports === false) {
+        prefix = AS_IMPORT;
+      }
+    }
+  };
+
+  let virtualisedEntry;
+
+  return {
+    name: "multi-entry",
+
+    options(options) {
+      if (options.input !== config.entryFileName) {
+        configure(options.input);
+      }
+      return {
+        ...options,
+        input: config.entryFileName,
+      };
+    },
+
+    outputOptions(options) {
+      return {
+        ...options,
+        entryFileNames: config.entryFileName,
+      };
+    },
+
+    buildStart(options) {
+      const patterns = config.include.concat(
+        config.exclude.map((pattern) => `!${pattern}`)
+      );
+      const entries = patterns.length
+        ? matched(patterns, { realpath: true }).then((paths) =>
+            paths.map(exporter).join("\n")
+          )
+        : Promise.resolve("");
+
+      virtualisedEntry = virtual({ [options.input]: entries });
+    },
+
+    resolveId(id, importer) {
+      return virtualisedEntry && virtualisedEntry.resolveId(id, importer);
+    },
+
+    load(id) {
+      return virtualisedEntry && virtualisedEntry.load(id);
+    },
+  };
+};
+
+const extractable = /(entry)\.css$/;
+const dynamicModules = /(App|Supervisor|Gallery|Swatch|Filter|ScopedStorage)/;
 const dynamicStyling = /(chroma|spinny|highlight\.js\/styles)/;
 
 let cached;
@@ -35,25 +119,41 @@ const getLocalExternalIP = () => {
 };
 
 const inputOptions = () => ({
-  input: ["./src/entry.ts"],
-  preserveEntrySignatures: "allow-extension",
-  manualChunks(id) {
-    if (id) {
-      if (id.includes("highlight.js/lib/languages")) {
-        return id.split("/").pop().slice(0, -3);
+  input: ["./src/entry.ts", "./src/utils/iterables.ts"],
+  preserveEntrySignatures: false,
+  manualChunks(moduleId, { getModuleInfo }) {
+    const { isEntry, importers } = getModuleInfo(moduleId);
+    if (isEntry) {
+      return "entry-chunk";
+    } else {
+      const importing = importers.map((id) => getModuleInfo(id));
+      const entried = importing.find((module) => module.isEntry);
+      if (entried) {
+        return "entry-chunk";
       }
-      if (id.includes("highlight.js/lib") || id.includes("Syntax"))
-        return "syntax";
-      if (dynamicStyling.test(id)) {
-        return "extra-styles";
-      }
-      if (id.includes("node_modules") || dynamicModules.test(id)) {
-        return "dynamic";
-      }
+    }
+    if (moduleId.includes("base.scss")) {
+      return null;
+    }
+    if (moduleId.includes("languages")) {
+      return moduleId
+        .split(/(?:\/|\\)/)
+        .pop()
+        .slice(0, -3);
+    }
+    if (moduleId.includes("highlight.js") || moduleId.includes("Syntax")) {
+      return "syntax";
+    }
+    if (dynamicStyling.test(moduleId)) {
+      return "extra-styles";
+    }
+    if (moduleId.includes("node_modules") || dynamicModules.test(moduleId)) {
+      return "dynamic";
     }
   },
   plugins: [
     progress(),
+    multiEntry(),
     resolve({
       mainFields: ["module", "main"],
     }),
@@ -90,7 +190,13 @@ const outputOptions = () => [
     format: "esm",
     sourcemap: true,
     chunkFileNames: "[name]-[format].js",
-    assetFileNames: "assets/[name]-[ext][extname]",
+    assetFileNames: (asset) => {
+      if (asset.name.includes("_virtual:")) {
+        return `assets/${asset.name.split("_virtual:").pop()}`;
+      }
+      return `assets/${asset.name}`;
+    },
+    //entryFileNames: "entry.js",
     plugins: [
       terser({
         mangle: {
@@ -160,25 +266,29 @@ const generate = (args) => {
 
 const serveFiles = () => {
   const watchOpts = watchOptions();
-  //watchOpts.cache = cached;
   const bundle = rollupWatch(watchOpts);
-  const startSync = (event) => {
-    if (event.code === "END") {
-      browserSync.init({
-        server: "./public",
-        notify: false,
-        open: false,
-      });
-      bundle.off("event", startSync);
-      browserSync.watch("public/**/*", browserSync.reload);
-    }
-  };
-  bundle.on("event", startSync);
+  let started;
   bundle.on("event", (event) => {
-    if (event.code === "BUNDLE_END") {
-      console.log(`Bundle generated in ${event.duration} ms`);
-      cached = event.result.cache;
-      saveCache(cached).catch(console.error);
+    switch (event.code) {
+      case "END":
+        if (!started) {
+          started = true;
+          browserSync.init({
+            server: "./public",
+            notify: false,
+            open: false,
+          });
+          browserSync.watch("public/**/*", browserSync.reload);
+        }
+        break;
+      case "ERROR":
+        console.error(event.error);
+        //done(event.error);
+        break;
+      case "BUNDLE_END":
+        console.log(`Bundle generated in ${event.duration} ms`);
+        cached = event.result.cache;
+        saveCache(cached).catch(console.error);
     }
   });
   watch(
