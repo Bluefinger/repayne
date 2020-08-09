@@ -8,9 +8,12 @@
       height: 100px;
     }
   }
-  &-full {
+  &-full, &-error {
     margin: toRem(10px);
     padding: toRem(12px);
+  }
+  &-error {
+    text-align: center;
   }
   &-title {
     margin: toRem(8px 0);
