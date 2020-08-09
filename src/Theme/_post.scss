@@ -44,6 +44,10 @@
       content: "#";
     }
   }
+  pre {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
   @include desktopView {
     &-full {
       margin: toRem(20px);
