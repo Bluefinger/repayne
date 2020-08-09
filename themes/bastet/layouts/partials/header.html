@@ -16,8 +16,8 @@
       </li>{{ end }}
     </ul>
   </nav>
-  <nav class="menu-section social-links" aria-label="Social Media Menu">
-    <ul class="menu menu-social">{{ range.Site.Data.social.websites }}
+  <nav class="menu-section external-links" aria-label="External Links Media Menu">
+    <ul class="menu menu-external">{{ range.Site.Data.social.websites }}
       <li>
         <a rel="noopener" target="_blank" href="{{.url}}" title="{{.name}}">
           <svg class="icon small" aria-labelledby="menu-icon-{{.icon}}" role="img">

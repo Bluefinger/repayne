@@ -2,30 +2,30 @@ import { registerLanguage, highlight } from "highlight.js/lib/core";
 import type { LazyHandler } from "../LazyLoader";
 import { map, uniqueMap } from "../utils/iterables";
 
-const syntaxes: Record<string, () => Promise<void>> = {
-  css: () =>
+const syntaxes: Record<string, (lang: string) => Promise<void>> = {
+  css: (lang) =>
     import("highlight.js/lib/languages/css").then((mod) =>
-      registerLanguage("css", mod.default)
+      registerLanguage(lang, mod.default)
     ),
-  scss: () =>
+  scss: (lang) =>
     import("highlight.js/lib/languages/scss").then((mod) =>
-      registerLanguage("scss", mod.default)
+      registerLanguage(lang, mod.default)
     ),
-  rust: () =>
+  rust: (lang) =>
     import("highlight.js/lib/languages/rust").then((mod) =>
-      registerLanguage("rust", mod.default)
+      registerLanguage(lang, mod.default)
     ),
-  html: () =>
+  html: (lang) =>
     import("highlight.js/lib/languages/xml").then((mod) => {
-      registerLanguage("html", mod.default);
+      registerLanguage(lang, mod.default);
     }),
-  javascript: () =>
+  javascript: (lang) =>
     import("highlight.js/lib/languages/javascript").then((mod) =>
-      registerLanguage("javascript", mod.default)
+      registerLanguage(lang, mod.default)
     ),
-  typescript: () =>
+  typescript: (lang) =>
     import("highlight.js/lib/languages/typescript").then((mod) =>
-      registerLanguage("typescript", mod.default)
+      registerLanguage(lang, mod.default)
     ),
   nohighlight: () => Promise.resolve(),
 };
@@ -60,7 +60,7 @@ const importHighlighters = <T extends Element>(
         });
         return lang;
       }),
-      (lang) => syntaxes[lang]()
+      (lang) => syntaxes[lang](lang)
     )
   );
 

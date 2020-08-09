@@ -119,4 +119,6 @@ Referring back to `executeTasks`, it then checks whether the task is an array or
 
 Foretell's optimisations focused around minimising object/function creation, as well as taking advantage of more modern APIs where possible for allocating microTasks. By focusing on writing with very specific goals in mind, it has allowed Foretell to not only yield better performance than Zousan, but also smaller file sizes thanks to more aggressive minification optimisations and settings.
 
+_However_, some of the APIs used to enable Foretell to be even faster exist on browsers that already have Promise support. At best, the polyfill could be used to perhaps replace Firefox's implementation for a little extra performance (which at the time this was written, lags a little in performance compared to Foretell & Chrome), but for Chrome, there's no point as Chrome's Promise implementation is pretty performant and optimised already. For older browsers, Foretell will be defaulting to means that are less performant anyway. But performance isn't always about execution speed, but also the size of the polyfill matters. The less code you need to load and parse, the better when it comes to polyfills.
+
 The code is available on [Github](https://github.com/Bluefinger/foretell) and is published to NPM. Foretell is MIT licensed.
